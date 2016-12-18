@@ -82,9 +82,6 @@ public class NewAccountActivity extends Activity {
                                 if((edtmail.getText().toString().contains("@")) || (edtmail.getText().toString().contains(".com"))
                                         || (edtmail.getText().toString().contains(".fr")) || (edtmail.getText().toString().contains(".net"))) {
                                     // si tout les controle de sparametres sont effectué et que tout est bon
-
-
-
                                     NetAsync(view);
                                 }
                                 else {
@@ -128,8 +125,6 @@ public class NewAccountActivity extends Activity {
     }
 
     private class NetCheck extends AsyncTask<String, Integer, Boolean> {
-
-        private ProgressDialog nDialog;
 
         String nom = edtnom.getText().toString();
         String prenom = edtprenom.getText().toString();
@@ -179,7 +174,7 @@ public class NewAccountActivity extends Activity {
                 }
             }
 
-            return Boolean.TRUE;
+            return Boolean.FALSE;
         }
 
         @Override

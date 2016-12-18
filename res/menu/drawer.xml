@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/inbox"
+            android:checked="false"
+            android:icon="@drawable/messages_icons"
+            android:title="@string/inbox_string" />
+
+        <item
+            android:id="@+id/fbaccount"
+            android:checked="false"
+            android:icon="@drawable/fb_icons"
+            android:title="@string/fbaccount_string" />
+
+        <item
+            android:id="@+id/account"
+            android:checked="false"
+            android:icon="@drawable/account_logo"
+            android:title="@string/account_string" />
+
+        <item
+            android:id="@+id/favoris"
+            android:checked="false"
+            android:icon="@drawable/diamond_icons"
+            android:title="@string/favoris_string" />
+
+        <item
+            android:id="@+id/friends"
+            android:checked="false"
+            android:icon="@drawable/friends_icons"
+            android:title="@string/friends_string" />
+
+        <item
+            android:id="@+id/events"
+            android:checked="false"
+            android:icon="@drawable/events_logo"
+            android:title="@string/events_string" />
+
+    </group>
+</menu>
