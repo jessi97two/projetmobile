@@ -34,6 +34,12 @@
             android:title="@string/friends_string" />
 
         <item
+            android:id="@+id/connect"
+            android:checked="false"
+            android:icon="@drawable/connect_icons"
+            android:title="@string/connect_string" />
+
+        <item
             android:id="@+id/events"
             android:checked="false"
             android:icon="@drawable/events_logo"

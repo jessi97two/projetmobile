@@ -25,13 +25,16 @@ public class LauncherActivity extends Activity {
         if(ga.prefs.contains("login") && ga.prefs.contains("password")) {
             String login = ga.prefs.getString("login","");
             String pwd = ga.prefs.getString("password","");
+            String id = ga.prefs.getString("id","");
             if(!(login.equals("")) && !(pwd.equals(""))) {
                 Intent gotoGeneral = new Intent(LauncherActivity.this, GeneralActivity.class);
                 startActivity(gotoGeneral);
+                finish();
             }
             else {
                 Intent gotoLogin = new Intent(LauncherActivity.this, LoginActivity.class);
                 startActivity(gotoLogin);
+                finish();
             }
         }
         else {

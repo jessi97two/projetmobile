@@ -11,10 +11,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
 
 /**
  * Created by Jess on 18/12/2016.
@@ -24,6 +27,7 @@ public class GeneralActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
+    private TextView usernameheader;
 
     GlobalApp ga;
 
@@ -66,13 +70,22 @@ public class GeneralActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.fbaccount:
+                        Intent gotoFBLogin = new Intent(GeneralActivity.this, FacebookActivity.class);
+                        startActivity(gotoFBLogin);
                         Toast.makeText(getApplicationContext(),"Fb account Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.account:
                         Toast.makeText(getApplicationContext(),"Account Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.friends:
+                        Intent gotoFriendsList = new Intent(GeneralActivity.this, UserFriendsActivity.class);
+                        startActivity(gotoFriendsList);
                         Toast.makeText(getApplicationContext(),"Friends Selected",Toast.LENGTH_SHORT).show();
+                        return true;
+                    case R.id.connect:
+                        Intent gotoConnect = new Intent(GeneralActivity.this, ConnectActivity.class);
+                        startActivity(gotoConnect);
+                        Toast.makeText(getApplicationContext(),"Connect Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.favoris:
                         Toast.makeText(getApplicationContext(),"Favoris Selected",Toast.LENGTH_SHORT).show();
@@ -111,6 +124,10 @@ public class GeneralActivity extends AppCompatActivity {
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
+        Integer t = navigationView.getHeaderCount();
+        View hv  =  navigationView.getHeaderView(0);
+        usernameheader = (TextView) hv.findViewById(R.id.usernameheader);
+        usernameheader.setText(ga.prefs.getString("login",""));
     }
 
     @Override
@@ -136,6 +153,9 @@ public class GeneralActivity extends AppCompatActivity {
             startActivity(gotoLogin);
             finish();
             return true;
+        }
+        else if(id == R.id.action_search) {
+
         }
 
         return super.onOptionsItemSelected(item);

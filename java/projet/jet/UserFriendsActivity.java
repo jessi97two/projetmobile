@@ -1,78 +1,71 @@
 package projet.jet;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.ListView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
- * Created by Jess on 18/12/2016.
+ * Created by Jess on 22/12/2016.
  */
-public class LoginActivity extends AppCompatActivity {
+public class UserFriendsActivity extends Activity {
 
-    private Button btnNewAccount;
-    private Button buttonSignIn;
-    private EditText edtLogin;
-    private EditText edtPwd;
-
+    ImageButton imgBtnBackToGeneral;
+    ImageButton imgBtnGoToSearch;
     GlobalApp ga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accueil_view);
+        setContentView(R.layout.activity_user_friends_list);
         ga = (GlobalApp) getApplication();
 
-        edtLogin = (EditText) findViewById(R.id.editTextLoginAccueil);
-        edtPwd = (EditText) findViewById(R.id.editTextPwd);
+        imgBtnBackToGeneral = (ImageButton) findViewById((R.id.imageButtonBackToGeneral));
+        imgBtnGoToSearch = (ImageButton) findViewById(R.id.imageButtonSearchAmongFriends);
 
-        btnNewAccount = (Button) findViewById(R.id.buttonNewAccount);
-        btnNewAccount.setOnClickListener(new View.OnClickListener() {
-
+        imgBtnBackToGeneral.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent versNewAccount = new Intent(LoginActivity.this, NewAccountActivity.class);
-                startActivity(versNewAccount);
+                Intent gotoGeneralPage = new Intent(UserFriendsActivity.this, GeneralActivity.class);
+                startActivity(gotoGeneralPage);
+                finish();
             }
         });
 
-        buttonSignIn = (Button)  findViewById(R.id.buttonSignIn);
-        buttonSignIn.setOnClickListener(new View.OnClickListener() {
+        imgBtnGoToSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(!(edtLogin.getText().toString().equals("")) && !(edtPwd.getText().toString().equals(""))) {
-                    NetAsync(v);
-                }
             }
         });
+
+        new CheckFriend().execute();
     }
 
-    private class NetCheck extends AsyncTask<String, Integer, Boolean> {
 
-        String txtReponse = "";
+    private class CheckFriend extends AsyncTask<String, Integer, Boolean> {
 
-        String login = edtLogin.getText().toString();
-        String password = edtPwd.getText().toString();
+        String txtReponse;
+
 
         @Override
         protected void onPreExecute() {
@@ -81,14 +74,13 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(String... params) {
-
             ConnectivityManager cnMngr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cnMngr.getActiveNetworkInfo();
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
                     String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
-                    String qs = "action=connexion" + "&login=" + login + "&password=" + password;
+                    String qs = "action=getFriends&iduser=" + ga.prefs.getString("id","");
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG CONNEXION","url utilisée : " + url.toString());
                     HttpURLConnection urlConnection = null;
@@ -120,34 +112,36 @@ public class LoginActivity extends AppCompatActivity {
                 if(txtReponse != "") {
                     try {
                         Log.i("DEBUG TEST REP", txtReponse);
-                        JSONObject json = new JSONObject(txtReponse);
-                        Log.i("DEBUG TEST","pour le user " + json.getString("idUser") + " connecte vaut : " + json.getString("connecte"));
-                        if(Integer.parseInt(json.getString("connecte")) == 0) {
-                          //  registerErrorMsg.setText("Login ou Mot de passe incorrect");
-                        }
-                        else if(Integer.parseInt(json.getString("connecte")) == 1) {
-                          //  registerErrorMsg.setText("Success");
-                            SharedPreferences.Editor editor = ga.prefs.edit();
-                            editor.clear();
-                            editor.putString("login",login);
-                            editor.putString("password",password);
-                            editor.putString("id",json.getString("idUser"));
-                            editor.commit();
-
-                            Intent versGeneralPAge = new Intent(LoginActivity.this,GeneralActivity.class);
-                            startActivity(versGeneralPAge);
-                            finish();
-                        }
+                        JSONObject jsonobj = new JSONObject(txtReponse);
+                        String val = jsonobj.getString("followers");
+                        JSONArray json = new JSONArray(val);
+                        displayResult(json);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
             }
         }
+
     }
 
-    public void NetAsync(View view){
-        new NetCheck().execute();
+    private void displayResult(JSONArray jsonarray) {
+
+        ArrayList<String> result = new ArrayList<String>();
+
+        try {
+                for (int l=0; l < jsonarray.length(); l++) {
+                    result.add(jsonarray.getJSONObject(l).getString("nom") + " " + jsonarray.getJSONObject(l).getString("prenom")
+                        + " : " + jsonarray.getJSONObject(l).getString("login") );
+                }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_user_friends_listview, result); // simple textview for list item
+        ListView listView = (ListView) findViewById(R.id.listViewFriends);
+        listView.setAdapter(adapter);
+
     }
 
 }

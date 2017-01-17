@@ -2,6 +2,8 @@ package projet.jet;
 
 import android.app.Application;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 
 import java.net.CookieHandler;
@@ -20,6 +22,7 @@ public class GlobalApp extends Application{
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
+
     }
 
 

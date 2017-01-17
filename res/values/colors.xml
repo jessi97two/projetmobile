@@ -5,6 +5,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="fondinput">#FBFBFC</color>
     <color name="inputtext">#00D6FC</color>
-    <color name="PrimaryColor">#2196F3</color>
+    <color name="PrimaryColor">#2196f3</color>
     <color name="PrimaryDarkColor">#1976D2</color>
 </resources>
