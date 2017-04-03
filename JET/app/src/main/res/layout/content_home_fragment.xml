@@ -58,7 +58,8 @@
                     <ListView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/listView2" />
+                        android:id="@+id/listViewSondages"
+                        android:background="@drawable/shape"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -90,7 +91,7 @@
                     <ListView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/listView3" />
+                        android:id="@+id/listViewInvitations" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -122,7 +123,7 @@
                     <ListView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/listView4" />
+                        android:id="@+id/listViewEvents" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
