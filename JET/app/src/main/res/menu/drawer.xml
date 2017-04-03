@@ -4,46 +4,34 @@
     <group android:checkableBehavior="single">
 
         <item
-            android:id="@+id/inbox"
+            android:id="@+id/home"
             android:checked="false"
-            android:icon="@drawable/messages_icons"
-            android:title="@string/inbox_string" />
-
-        <item
-            android:id="@+id/fbaccount"
-            android:checked="false"
-            android:icon="@drawable/fb_icons"
-            android:title="@string/fbaccount_string" />
+            android:icon="@drawable/home_icon"
+            android:title="@string/home_nav" />
 
         <item
             android:id="@+id/account"
             android:checked="false"
             android:icon="@drawable/account_logo"
-            android:title="@string/account_string" />
+            android:title="@string/account_nav" />
 
         <item
-            android:id="@+id/favoris"
+            android:id="@+id/restaurants"
             android:checked="false"
-            android:icon="@drawable/diamond_icons"
-            android:title="@string/favoris_string" />
+            android:icon="@drawable/restaurant_icon"
+            android:title="@string/restaurants_nav" />
 
         <item
-            android:id="@+id/friends"
+            android:id="@+id/groups"
             android:checked="false"
             android:icon="@drawable/friends_icons"
-            android:title="@string/friends_string" />
-
-        <item
-            android:id="@+id/connect"
-            android:checked="false"
-            android:icon="@drawable/connect_icons"
-            android:title="@string/connect_string" />
+            android:title="@string/groups_nav" />
 
         <item
             android:id="@+id/events"
             android:checked="false"
             android:icon="@drawable/events_logo"
-            android:title="@string/events_string" />
+            android:title="@string/events_nav" />
 
-    </group>
-</menu>
+        </group>
+    </menu>

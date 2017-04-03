@@ -150,7 +150,7 @@ public class NewAccountActivity extends Activity {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
+                    String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
                     String qs = "action=inscription" + "&nom=" + nom + "&prenom=" + prenom + "&login=" + login + "&password=" + password + "&mail=" + mail + "&tel=" + tel;
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG INSCRIPTION","url utilisée : " + url.toString());

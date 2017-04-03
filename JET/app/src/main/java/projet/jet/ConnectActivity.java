@@ -129,7 +129,7 @@ public class ConnectActivity extends AppCompatActivity {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
+                    String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
                     String qs = "action=recherchefriends" + "&search=" + rech;
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG CONNEXION","url utilisée : " + url.toString());
@@ -192,7 +192,7 @@ public class ConnectActivity extends AppCompatActivity {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
+                    String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
                     String qs = "action=getFriends&iduser=" + ga.prefs.getString("id","");
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG CONNEXION","url utilisée : " + url.toString());

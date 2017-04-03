@@ -87,7 +87,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
+                    String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
                     String qs = "action=connexion" + "&login=" + login + "&password=" + password;
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG CONNEXION","url utilisée : " + url.toString());
