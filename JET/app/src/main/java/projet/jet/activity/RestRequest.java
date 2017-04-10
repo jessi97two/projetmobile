@@ -1,5 +1,6 @@
 package projet.jet.activity;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -7,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import projet.jet.GeneralActivity;
 import projet.jet.GlobalApp;
 import projet.jet.R;
 import projet.jet.fragments.HomeFragment;
@@ -64,7 +66,55 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
                 e.printStackTrace();
             }
         }
+        else if(action.equals("getInvitationsReceived")) {
+            try {
+                String val = result.getString("invitations");
+                JSONArray json = new JSONArray(val);
+                homeFragment = (HomeFragment) mAct.frag.findFragmentByTag("home");
+                homeFragment.displayResult("invitations",json);
 
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getEventsProche")) {
+            try {
+                String val = result.getString("events");
+                JSONArray json = new JSONArray(val);
+                homeFragment = (HomeFragment) mAct.frag.findFragmentByTag("home");
+                homeFragment.displayResult("events",json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getInfosSondage")) {
+            try {
+                String val = result.getString("sondage");
+                String valdates = result.getString("dates");
+                String valrestos = result.getString("restaurants");
+
+                JSONArray json = new JSONArray(val);
+                JSONArray jsondate = new JSONArray(valdates);
+                JSONArray jsonrestos = new JSONArray(valrestos);
+
+                SondageInformationsActivity sondageInformationsActivity = (SondageInformationsActivity) mAct.act;
+                sondageInformationsActivity.displayResult("infossondage",json, jsondate, jsonrestos);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("putReponsesSondage")) {
+            try {
+                String res  = result.getString("statutreponsesondage");
+                if(res.equals("1")) {
+                    Intent gotohomepage = new Intent(mAct.act, GeneralActivity.class);
+                    mAct.act.startActivity(gotohomepage);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

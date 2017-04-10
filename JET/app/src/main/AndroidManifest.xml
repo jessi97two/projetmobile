@@ -20,7 +20,7 @@
         <activity android:name=".LoginActivity" android:label="Sign in" ></activity>
         <activity android:name=".NewAccountActivity" android:label="New Account" ></activity>
         <activity android:name=".GeneralActivity" android:label="General" ></activity>
-        <activity android:name=".UserFriendsActivity" android:label="General" ></activity>
+        <activity android:name=".activity.SondageInformationsActivity" android:label="Informations Sondage" ></activity>
         <activity android:name=".FacebookLoggedActivity" android:label="General" ></activity>
         <activity android:name=".FriendsFacebookActivity" android:label="General" ></activity>
         <activity android:name=".FacebookActivity" android:label="General" ></activity>

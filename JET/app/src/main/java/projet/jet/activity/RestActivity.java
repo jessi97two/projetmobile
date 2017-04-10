@@ -15,16 +15,18 @@ public class RestActivity extends AppCompatActivity {
 
     protected GlobalApp ga;
     protected FragmentManager frag;
+    protected Activity act;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
-    public void envoiRequete(String qs, String action, GlobalApp gapp,FragmentManager fragment) {
+    public void envoiRequete(String qs, String action, GlobalApp gapp,FragmentManager fragment, Activity activity) {
 
         ga = gapp;
         frag = fragment;
+        act = activity;
 
         RestRequest req = new RestRequest(this);
         req.execute(qs,action);
