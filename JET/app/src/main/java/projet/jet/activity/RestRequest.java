@@ -115,6 +115,29 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
                 e.printStackTrace();
             }
         }
+        else if(action.equals("getInfosInvitation")) {
+            try {
+                String val = result.getString("invitation");
+                JSONArray json = new JSONArray(val);
+
+                InvitationInformationsActivity invitationInformationsActivity = (InvitationInformationsActivity) mAct.act;
+                invitationInformationsActivity.displayResult(json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("putReponsesInvitation")) {
+            try {
+                String res  = result.getString("statutreponseinvitation");
+                if(res.equals("1")) {
+                    Intent gotohomepage = new Intent(mAct.act, GeneralActivity.class);
+                    mAct.act.startActivity(gotohomepage);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

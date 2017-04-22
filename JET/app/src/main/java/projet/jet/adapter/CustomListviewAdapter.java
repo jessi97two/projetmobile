@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import projet.jet.GlobalApp;
 import projet.jet.R;
+import projet.jet.activity.InvitationInformationsActivity;
 import projet.jet.activity.SondageActivity;
 import projet.jet.activity.SondageInformationsActivity;
 
@@ -30,14 +31,15 @@ public class CustomListviewAdapter extends BaseAdapter {
     Activity activity;
     Boolean found = false;
     String listjson;
+    String type;
 
-
-    public  CustomListviewAdapter (Context context, ArrayList<String> data, Application app, Activity a)
+    public  CustomListviewAdapter (String type, Context context, ArrayList<String> data, Application app, Activity a)
     {
         this.con = context;
         this.data = data;
         this.ga = (GlobalApp) app;
         this.activity = a;
+        this.type = type;
     }
 
     @Override
@@ -67,17 +69,32 @@ public class CustomListviewAdapter extends BaseAdapter {
         final String id = data.get(position).split("_")[1];
         textTitre.setText(titre);
 
-        btnInfo.setOnClickListener(new View.OnClickListener() {
+        if(type.equals("sondage")) {
+            btnInfo.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putString("idsondage", id);
-                Intent gotosondage = new Intent(activity, SondageInformationsActivity.class);
-                gotosondage.putExtras(bundle);
-                activity.startActivity(gotosondage);
-            }
-        });
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("idsondage", id);
+                    Intent gotosondage = new Intent(activity, SondageInformationsActivity.class);
+                    gotosondage.putExtras(bundle);
+                    activity.startActivity(gotosondage);
+                }
+            });
+        }
+        else if(type.equals("invitation")) {
+            btnInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("idinvitation", id);
+                    Intent gotoinvit = new Intent(activity, InvitationInformationsActivity.class);
+                    gotoinvit.putExtras(bundle);
+                    activity.startActivity(gotoinvit);
+                }
+            });
+        }
+
 
         return convertView;
     }
