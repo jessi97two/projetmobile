@@ -1,33 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_marginRight="300px">
-
         <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/hometitre"
-            android:layout_marginLeft="20px"
-            android:layout_marginTop="20px"
-            android:layout_marginBottom="20px"
-            android:text="Text Test" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="5">
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:text="Text Test"
+            android:layout_alignParentLeft="true"/>
 
         <Button
             android:layout_width="34dp"
@@ -37,7 +22,6 @@
             android:layout_marginTop="20px"
             android:layout_marginRight="20px"
             android:layout_marginBottom="20px"
-            android:gravity="right"/>
-    </LinearLayout>
+            android:layout_alignParentRight="true"/>
 
-</LinearLayout>
+</RelativeLayout>

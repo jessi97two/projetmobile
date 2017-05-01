@@ -231,12 +231,12 @@ public class GeneralActivity extends AppCompatActivity {
                 // movies fragment
                 RestoFragment restoFragment = new RestoFragment();
                 return restoFragment;
-            case 3:
+            case 4:
                 // notifications fragment
                 EventsFragment eventsFragment = new EventsFragment();
                 return eventsFragment;
 
-            case 4:
+            case 3:
                 // settings fragment
                 GroupsFragment groupsFragment = new GroupsFragment();
                 return groupsFragment;

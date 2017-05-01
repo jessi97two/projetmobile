@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 import projet.jet.GlobalApp;
 import projet.jet.R;
+import projet.jet.activity.ContactsActivity;
 import projet.jet.activity.InvitationInformationsActivity;
-import projet.jet.activity.SondageActivity;
 import projet.jet.activity.SondageInformationsActivity;
 
 /**
@@ -60,37 +60,61 @@ public class CustomListviewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView= inflater.inflate(R.layout.home_fragment_listview, parent, false);
 
-        final TextView textTitre = (TextView) convertView.findViewById(R.id.hometitre);
-        final Button btnInfo = (Button) convertView.findViewById(R.id.btninfo);
+        if(type.equals("sondage") || type.equals("invitation")) {
+            convertView= inflater.inflate(R.layout.home_fragment_listview, parent, false);
 
-        String titre = data.get(position).split("_")[0];
-        final String id = data.get(position).split("_")[1];
-        textTitre.setText(titre);
+            final TextView textTitre = (TextView) convertView.findViewById(R.id.hometitre);
+            final Button btnInfo = (Button) convertView.findViewById(R.id.btninfo);
 
-        if(type.equals("sondage")) {
-            btnInfo.setOnClickListener(new View.OnClickListener() {
+            String titre = data.get(position).split("_")[0];
+            final String id = data.get(position).split("_")[1];
+            textTitre.setText(titre);
 
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("idsondage", id);
-                    Intent gotosondage = new Intent(activity, SondageInformationsActivity.class);
-                    gotosondage.putExtras(bundle);
-                    activity.startActivity(gotosondage);
-                }
-            });
+            if(type.equals("sondage")) {
+                btnInfo.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("idsondage", id);
+                        Intent gotosondage = new Intent(activity, SondageInformationsActivity.class);
+                        gotosondage.putExtras(bundle);
+                        activity.startActivity(gotosondage);
+                    }
+                });
+            }
+            else if(type.equals("invitation")) {
+                btnInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("idinvitation", id);
+                        Intent gotoinvit = new Intent(activity, InvitationInformationsActivity.class);
+                        gotoinvit.putExtras(bundle);
+                        activity.startActivity(gotoinvit);
+                    }
+                });
+            }
         }
-        else if(type.equals("invitation")) {
-            btnInfo.setOnClickListener(new View.OnClickListener() {
+        else if(type.equals("groups")) {
+            convertView= inflater.inflate(R.layout.groups_contacts_list, parent, false);
+
+            final TextView txtGroup = (TextView) convertView.findViewById(R.id.groupname);
+
+
+            final String titre = data.get(position).split("_")[0];
+            final String groupnameid = data.get(position);
+            txtGroup.setText(titre);
+
+            txtGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("idinvitation", id);
-                    Intent gotoinvit = new Intent(activity, InvitationInformationsActivity.class);
-                    gotoinvit.putExtras(bundle);
-                    activity.startActivity(gotoinvit);
+                    bundle.putString("groupe", groupnameid);
+                    Intent gotocontact = new Intent(activity, ContactsActivity.class);
+                    gotocontact.putExtras(bundle);
+                    activity.startActivity(gotocontact);
                 }
             });
         }

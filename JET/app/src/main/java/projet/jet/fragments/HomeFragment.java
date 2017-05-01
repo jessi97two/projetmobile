@@ -91,6 +91,7 @@ public class HomeFragment extends Fragment {
                 ArrayAdapter adapter = new ArrayAdapter<String>(a, R.layout.home_fragment_listview, result); // simple textview for list item
                 CustomListviewAdapter customListviewAdapterad = new CustomListviewAdapter("sondage",this.getActivity(), result,a.getApplication(),a);
                 mListViewSondages.setAdapter(customListviewAdapterad);
+                ListUtils.setDynamicHeight(mListViewSondages);
             }
             else {
                 txtSondages.setVisibility(View.VISIBLE);
@@ -112,6 +113,7 @@ public class HomeFragment extends Fragment {
                 ArrayAdapter adapter = new ArrayAdapter<String>(a, R.layout.home_fragment_listview, result); // simple textview for list item
                 CustomListviewAdapter customListviewAdapterad = new CustomListviewAdapter("invitation",this.getActivity(), result,a.getApplication(),a);
                 mListViewInvitations.setAdapter(customListviewAdapterad);
+                ListUtils.setDynamicHeight(mListViewInvitations);
             }
             else {
                 txtInvitations.setVisibility(View.VISIBLE);
@@ -129,7 +131,29 @@ public class HomeFragment extends Fragment {
             ArrayAdapter adapter = new ArrayAdapter<String>(a, android.R.layout.simple_list_item_1, result); // simple textview for list item
 
             mListViewEvents.setAdapter(adapter);
+            ListUtils.setDynamicHeight(mListViewEvents);
         }
 
+    }
+
+    public static class ListUtils {
+        public static void setDynamicHeight(ListView mListView) {
+            ListAdapter mListAdapter = mListView.getAdapter();
+            if (mListAdapter == null) {
+                // when adapter is null
+                return;
+            }
+            int height = 0;
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(mListView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            for (int i = 0; i < mListAdapter.getCount(); i++) {
+                View listItem = mListAdapter.getView(i, null, mListView);
+                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                height += listItem.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = mListView.getLayoutParams();
+            params.height = height + (mListView.getDividerHeight() * (mListAdapter.getCount() - 1));
+            mListView.setLayoutParams(params);
+            mListView.requestLayout();
+        }
     }
 }

@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="projet.jet">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".GlobalApp"
         android:allowBackup="true"
@@ -22,6 +26,7 @@
         <activity android:name=".GeneralActivity" android:label="General" ></activity>
         <activity android:name=".activity.SondageInformationsActivity" android:label="Informations Sondage" ></activity>
         <activity android:name=".activity.InvitationInformationsActivity" android:label="Informations Invitation" ></activity>
+        <activity android:name=".activity.ContactsActivity" android:label="Contacts" ></activity>
         <activity android:name=".FacebookLoggedActivity" android:label="General" ></activity>
         <activity android:name=".FriendsFacebookActivity" android:label="General" ></activity>
         <activity android:name=".FacebookActivity" android:label="General" ></activity>
@@ -46,8 +51,6 @@
 
     </application>
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
 
 </manifest>

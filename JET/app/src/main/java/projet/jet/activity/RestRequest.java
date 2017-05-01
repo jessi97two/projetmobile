@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import projet.jet.GeneralActivity;
 import projet.jet.GlobalApp;
+import projet.jet.LauncherActivity;
 import projet.jet.R;
 import projet.jet.fragments.HomeFragment;
 
@@ -133,6 +134,40 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
                 if(res.equals("1")) {
                     Intent gotohomepage = new Intent(mAct.act, GeneralActivity.class);
                     mAct.act.startActivity(gotohomepage);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getGroups")) {
+            try {
+                String res  = result.getString("groupes");
+                JSONArray json = null;
+                if(!(res.equals("0"))) {
+                    json = new JSONArray(res);
+                }
+                LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
+                launcherActivity.displayResult(json,"groupsReceived");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("addGroup")) {
+            try {
+                String res  = result.getString("groupe");
+                if(res.equals("1")) {
+                    LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("removeGroup")) {
+            try {
+                String res  = result.getString("groupe");
+                if(res.equals("1")) {
+                    LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
