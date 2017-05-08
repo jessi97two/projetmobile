@@ -50,7 +50,7 @@ public class ContactsActivity  extends AppCompatActivity {
         namecontactsList = new ArrayList<String>();
 
         for(String id : groupenameid.split("_")[1].split(",")) {
-            contactsList = fetchGroupMembers(id);
+            contactsList = fetchGroupMembers(id,this);
         }
 
 
@@ -68,16 +68,16 @@ public class ContactsActivity  extends AppCompatActivity {
 
     }
 
-    private ArrayList<Contact> fetchGroupMembers(String groupId){
+    public ArrayList<Contact> fetchGroupMembers(String groupId, Activity activity){
         ArrayList<Contact> groupMembers = new ArrayList<Contact>();
         String where =  ContactsContract.CommonDataKinds.GroupMembership.GROUP_ROW_ID +"='"+groupId
                 +"' AND "
                 + ContactsContract.CommonDataKinds.GroupMembership.MIMETYPE+"='"
                 + ContactsContract.CommonDataKinds.GroupMembership.CONTENT_ITEM_TYPE+"'";
-        String[] projection = new String[]{ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID, ContactsContract.Data.DISPLAY_NAME};
+        String[] projection = new String[]{ContactsContract.Data.CONTACT_ID, ContactsContract.Data.DISPLAY_NAME};
 
         Cursor cursor=null;
-        ContentResolver contentResolver = getContentResolver();
+        ContentResolver contentResolver = activity.getContentResolver();
         try {
             cursor = contentResolver.query(ContactsContract.Data.CONTENT_URI, projection, where,null,
                     ContactsContract.Data.DISPLAY_NAME+" COLLATE LOCALIZED ASC");
@@ -94,10 +94,21 @@ public class ContactsActivity  extends AppCompatActivity {
         while(cursor.moveToNext()){
             Contact contact = new Contact();
             contact.name = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME));
-            contact.id = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.GroupMembership.RAW_CONTACT_ID));
-            Cursor phoneFetchCursor = getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                    new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER, ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.TYPE},
-                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID+"="+contact.id,null,null);
+            contact.id = cursor.getString(cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID));
+
+            Cursor phoneFetchCursor = null;
+
+            try {
+                phoneFetchCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null,
+                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID+"='"+contact.id+"'",null,null);
+
+                //int phoneNumberIndex = cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER);
+            }
+            catch (Exception ex)
+            {
+                Log.e("Content.Cursor",ex.getMessage() );
+            }
+
             while(phoneFetchCursor.moveToNext()){
                 contact.phNo = phoneFetchCursor.getString(phoneFetchCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                 contact.phDisplayName = phoneFetchCursor.getString(phoneFetchCursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));

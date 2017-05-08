@@ -12,7 +12,9 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
+import projet.jet.activity.ContactsActivity;
 import projet.jet.activity.RestActivity;
+import projet.jet.classe.Contact;
 import projet.jet.classe.Group;
 import projet.jet.fragments.GroupsFragment;
 
@@ -24,6 +26,7 @@ public class LauncherActivity extends Activity {
     GlobalApp ga;
     RestActivity restAct;
     List<String> listGroupsReceived = new ArrayList<String>();
+    List<Contact> contactsList = new ArrayList<Contact>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,7 +78,7 @@ public class LauncherActivity extends Activity {
             // test if group is already in the database , if not put the group into the listGroupsToAdd
             for(Group group : listGroupsOnThePhone) {
                 if(!(listGroupsReceived.contains(group.name))) {
-                    listGroupsToAdd.add(group.name);
+                    listGroupsToAdd.add(group.name + "_" + group.id);
                 }
             }
 
@@ -95,7 +98,8 @@ public class LauncherActivity extends Activity {
             }
 
             for(String group : listGroupsToAdd) {
-                String req = "action=addGroup&iduser=" + ga.prefs.getString("id","") + "&groupName=" + group;
+                String req = "action=addGroup&iduser=" + ga.prefs.getString("id","") + "&groupName=" + group.split("_")[0]
+                        + "&groupidphone=" + group.split("_")[1];
                 restAct.envoiRequete(req,"addGroup",ga,null,this);
             }
 

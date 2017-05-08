@@ -7,4 +7,5 @@
     <color name="inputtext">#00D6FC</color>
     <color name="PrimaryColor">#2196f3</color>
     <color name="PrimaryDarkColor">#1976D2</color>
+    <color name="ColorPrimary">#FF5722</color>
 </resources>

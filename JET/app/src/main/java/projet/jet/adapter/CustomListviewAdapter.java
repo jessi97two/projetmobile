@@ -18,6 +18,7 @@ import projet.jet.GlobalApp;
 import projet.jet.R;
 import projet.jet.activity.ContactsActivity;
 import projet.jet.activity.InvitationInformationsActivity;
+import projet.jet.activity.ResultatsSondageActivity;
 import projet.jet.activity.SondageInformationsActivity;
 
 /**
@@ -61,13 +62,13 @@ public class CustomListviewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if(type.equals("sondage") || type.equals("invitation")) {
+        if(type.equals("sondage") || type.equals("invitation") || type.equals("sondageevents")) {
             convertView= inflater.inflate(R.layout.home_fragment_listview, parent, false);
 
             final TextView textTitre = (TextView) convertView.findViewById(R.id.hometitre);
             final Button btnInfo = (Button) convertView.findViewById(R.id.btninfo);
 
-            String titre = data.get(position).split("_")[0];
+            final String titre = data.get(position).split("_")[0];
             final String id = data.get(position).split("_")[1];
             textTitre.setText(titre);
 
@@ -96,6 +97,19 @@ public class CustomListviewAdapter extends BaseAdapter {
                     }
                 });
             }
+            else if(type.equals("sondageevents")) {
+                btnInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("idsondage", id);
+                        bundle.putString("nomsondage", titre);
+                        Intent gotoresultatsondage = new Intent(activity, ResultatsSondageActivity.class);
+                        gotoresultatsondage.putExtras(bundle);
+                        activity.startActivity(gotoresultatsondage);
+                    }
+                });
+            }
         }
         else if(type.equals("groups")) {
             convertView= inflater.inflate(R.layout.groups_contacts_list, parent, false);
@@ -118,7 +132,6 @@ public class CustomListviewAdapter extends BaseAdapter {
                 }
             });
         }
-
 
         return convertView;
     }

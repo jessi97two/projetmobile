@@ -12,6 +12,7 @@ import projet.jet.GeneralActivity;
 import projet.jet.GlobalApp;
 import projet.jet.LauncherActivity;
 import projet.jet.R;
+import projet.jet.fragments.EventsFragment;
 import projet.jet.fragments.HomeFragment;
 
 /**
@@ -146,8 +147,14 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
                 if(!(res.equals("0"))) {
                     json = new JSONArray(res);
                 }
-                LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
-                launcherActivity.displayResult(json,"groupsReceived");
+                if(mAct.act instanceof LauncherActivity) {
+                    LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
+                    launcherActivity.displayResult(json,"groupsReceived");
+                }
+                else if(mAct.act instanceof SondageCreationActivityGroupes) {
+                    SondageCreationActivityGroupes sondageCreationActivityGroupes = (SondageCreationActivityGroupes) mAct.act;
+                    sondageCreationActivityGroupes.displayResult(json,"groupsReceived");
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -169,6 +176,158 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
                 if(res.equals("1")) {
                     LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getRestaurants")) {
+            try {
+                String res  = result.getString("restaurants");
+                JSONArray json = null;
+                if(!(res.equals("0"))) {
+                    json = new JSONArray(res);
+                }
+                SondageCreationActivityRestos sondageCreationActivityRestos = (SondageCreationActivityRestos) mAct.act;
+                sondageCreationActivityRestos.displayResult(json,"restaurantsReceived");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getGroupById")) {
+            try {
+                String res  = result.getString("groupe");
+                JSONArray json = null;
+                if(!(res.equals("0"))) {
+                    json = new JSONArray(res);
+                }
+                SondageCreationActivityRecapitulatif sondageCreationActivityRecapitulatif = (SondageCreationActivityRecapitulatif) mAct.act;
+                sondageCreationActivityRecapitulatif.displayResult(json,"groupeNameReceived");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getRestaurantById")) {
+            try {
+                String res  = result.getString("restaurant");
+                JSONArray json = null;
+                if(!(res.equals("0"))) {
+                    json = new JSONArray(res);
+                }
+                SondageCreationActivityRecapitulatif sondageCreationActivityRecapitulatif = (SondageCreationActivityRecapitulatif) mAct.act;
+                sondageCreationActivityRecapitulatif.displayResult(json,"restaurantNameReceived");
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("addSondage")) {
+            try {
+                String res  = result.getString("sondage");
+
+                SondageCreationActivityRecapitulatif sondageCreationActivityRecapitulatif = (SondageCreationActivityRecapitulatif) mAct.act;
+                sondageCreationActivityRecapitulatif.suiteEnregistrementRestaurant(res);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("addProprositionRestaurant")) {
+            try {
+                String res  = result.getString("propositionrestaurant");
+
+            //    SondageCreationActivityRecapitulatif sondageCreationActivityRecapitulatif = (SondageCreationActivityRecapitulatif) mAct.act;
+            //    sondageCreationActivityRecapitulatif.suiteEnregistrementDate();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("addProprositionDate")) {
+            try {
+                String res  = result.getString("propositiondate");
+
+     /*           Intent gotohomepage = new Intent(mAct.act, GeneralActivity.class);
+                mAct.act.startActivity(gotohomepage);
+                mAct.act.finish(); */
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getContactByNumber")) {
+            try {
+                String res  = result.getString("contact");
+
+             //   SondageCreationActivityRecapitulatif sondageCreationActivityRecapitulatif = (SondageCreationActivityRecapitulatif) mAct.act;
+               // sondageCreationActivityRecapitulatif.lancerSondage();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getIdOnTelGroup")) {
+            try {
+                String res  = result.getString("idontelgroupe");
+
+                SondageCreationActivityRecapitulatif sondageCreationActivityRecapitulatif = (SondageCreationActivityRecapitulatif) mAct.act;
+                sondageCreationActivityRecapitulatif.majContactsGroupe(res);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getAllSondagesUser")) {
+            try {
+                String val = result.getString("sondages");
+                JSONArray json = new JSONArray(val);
+
+                EventsFragment eventFragment = (EventsFragment) mAct.frag.findFragmentByTag("events");
+                eventFragment.displayResult("sondages",json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getResultatsDateSondage")) {
+            try {
+                String val = result.getString("resultatsDate");
+                JSONArray json = new JSONArray(val);
+
+                ResultatsSondageActivity resultatsSondageActivity = (ResultatsSondageActivity) mAct.act;
+                resultatsSondageActivity.loadUsersResultatsDatesSondage(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getUsersResultatsDateSondage")) {
+            try {
+                String val = result.getString("resultatsUsersDate");
+                JSONArray json = new JSONArray(val);
+
+                ResultatsSondageActivity resultatsSondageActivity = (ResultatsSondageActivity) mAct.act;
+                resultatsSondageActivity.completeTableChoixDates(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getResultatsRestaurantSondage")) {
+            try {
+                String val = result.getString("resultatsRestaurant");
+                JSONArray json = new JSONArray(val);
+
+                ResultatsSondageActivity resultatsSondageActivity = (ResultatsSondageActivity) mAct.act;
+                resultatsSondageActivity.loadUsersResultatsRestaurantsSondage(json);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getUsersResultatsRestaurantSondage")) {
+            try {
+                String val = result.getString("resultatsUsersRestaurant");
+                JSONArray json = new JSONArray(val);
+
+                ResultatsSondageActivity resultatsSondageActivity = (ResultatsSondageActivity) mAct.act;
+                resultatsSondageActivity.completeTableChoixRestaurants(json);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

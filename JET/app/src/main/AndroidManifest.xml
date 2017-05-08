@@ -21,15 +21,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".LoginActivity" android:label="Sign in" ></activity>
-        <activity android:name=".NewAccountActivity" android:label="New Account" ></activity>
-        <activity android:name=".GeneralActivity" android:label="General" ></activity>
-        <activity android:name=".activity.SondageInformationsActivity" android:label="Informations Sondage" ></activity>
-        <activity android:name=".activity.InvitationInformationsActivity" android:label="Informations Invitation" ></activity>
-        <activity android:name=".activity.ContactsActivity" android:label="Contacts" ></activity>
-        <activity android:name=".FacebookLoggedActivity" android:label="General" ></activity>
-        <activity android:name=".FriendsFacebookActivity" android:label="General" ></activity>
-        <activity android:name=".FacebookActivity" android:label="General" ></activity>
+        <activity android:name=".LoginActivity" android:label="Sign in" />
+        <activity android:name=".NewAccountActivity" android:label="New Account" />
+        <activity android:name=".GeneralActivity" android:label="General" />
+        <activity android:name=".activity.SondageInformationsActivity" android:label="Informations Sondage" />
+        <activity android:name=".activity.InvitationInformationsActivity" android:label="Informations Invitation" />
+        <activity android:name=".activity.ContactsActivity" android:label="Contacts" />
+        <activity android:name=".activity.SondageCreationActivity" android:label="Création sondage" />
+        <activity android:name=".activity.SondageCreationActivityDate" android:label="Création sondage 1" />
+        <activity android:name=".activity.SondageCreationActivityRestos" android:label="Création sondage 2 " />
+        <activity android:name=".activity.SondageCreationActivityGroupes" android:label="Création sondage 3" />
+        <activity android:name=".activity.SondageCreationActivityRecapitulatif" android:label="Création sondage récapitulatif" />
+        <activity android:name=".activity.ResultatsSondageActivity" android:label="Resultat sondage" />
+
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>
         <activity android:name="com.facebook.FacebookActivity"
@@ -37,17 +41,6 @@
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
-
-        <activity android:name=".ConnectActivity" android:label="Connect" >
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <intent-filter >
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable_friend"/>
-        </activity>
 
     </application>
 
