@@ -60,6 +60,9 @@ public class EventsFragment extends Fragment {
         String qs = "action=getAllSondagesUser&iduser=";
         restAct.envoiRequete(qs+ ga.prefs.getString("id",""),"getAllSondagesUser",ga,this.getFragmentManager(),null);
 
+        String qs2 = "action=getAllEventsUser&iduser=";
+        restAct.envoiRequete(qs2+ ga.prefs.getString("id",""),"getAllEventsUser",ga,this.getFragmentManager(),null);
+
 
         btnCreatePoll.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +97,20 @@ public class EventsFragment extends Fragment {
             }
         }
         else if(type.equals("events")) {
+            if(jsonarray.length() > 0) {
+                txtEvents.setVisibility(View.INVISIBLE);
+                try {
+                    for (int l=0; l < jsonarray.length(); l++) {
+                        result.add(jsonarray.getJSONObject(l).getString("nom") + "_" + jsonarray.getJSONObject(l).getString("id") );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
+                CustomListviewAdapter customListviewAdapterad = new CustomListviewAdapter("eventsevents",this.getActivity(), result,a.getApplication(),a);
+                listViewEvents.setAdapter(customListviewAdapterad);
+                ListUtils.setDynamicHeight(listViewEvents);
+            }
         }
     }
 

@@ -57,7 +57,9 @@ function getFollowers($iduser) {
 function getPools($iduser) {
 	$SQL = "SELECT s.titre, s.id FROM sondages AS s
 	LEFT JOIN reponsessondages AS r ON r.idsondage = s.id
-	WHERE 0 = (SELECT count(*) FROM reponsessondages WHERE iduser='$iduser' AND idsondage=s.id)
+	LEFT JOIN groupes AS g ON g.id = s.idgroupe
+	LEFT JOIN liens_users_groupes AS l ON l.idgroupe = s.idgroupe
+	WHERE  s.iduser != '$iduser' AND 0 = (SELECT count(*) FROM reponsessondages WHERE idsondage=s.id AND iduser = l.iduser)
 	GROUP BY s.titre";
 	return parcoursRs(SQLSelect($SQL));
 }
@@ -66,15 +68,16 @@ function getInvitations($iduser) {
 	$SQL = "SELECT i.id, e.nom FROM events AS e 
 			LEFT JOIN invitations AS i ON i.idevent = e.id 
 			LEFT JOIN groupes AS g ON g.id = i.idgroupe 
-			LEFT JOIN liens_users_groupes AS l ON l.idgroupe = g.id 
-			WHERE l.iduser = '$iduser'";
+			LEFT JOIN liens_users_groupes AS l ON l.idgroupe = g.id
+			LEFT JOIN participationsevents AS p ON p.idevent = i.idevent 
+			WHERE l.iduser = '$iduser' AND 0=(SELECT count(*) FROM participationsevents WHERE iduser='$iduser' AND idevent=i.idevent)";
 	return parcoursRs(SQLSelect($SQL));
 }
 
 function getEventsProche($iduser) {
 	$SQL = "SELECT e.nom FROM events AS e
 			LEFT JOIN participationsevents AS p ON p.idevent = e.id
-			WHERE DATEDIFF(e.dateEvent , NOW()) < 7 AND p.iduser = '$iduser'";
+			WHERE DATEDIFF(e.dateEvent , NOW()) < 7 AND DATEDIFF(e.dateEvent , NOW()) > 0 AND p.iduser = '$iduser'";
 	return parcoursRs(SQLSelect($SQL));
 }
 
@@ -103,6 +106,147 @@ function getPropositionsRestaurantSondage($idsondage) {
 function addReponseSondage($iduser,$idsondage,$iddate,$idresto) {
 	$SQL = "INSERT INTO reponsessondages(iduser,idsondage,iddate,idrestaurant) VALUES('$iduser','$idsondage','$iddate','$idresto')";
 	return SQLInsert($SQL);
+}
+
+function getInfosInvitation($idinvitation) {
+	$SQL = "SELECT e.id AS idevent, e.nom AS nomevent, e.dateEvent, e.heureDebut, r.nom AS restaurant, u.nom, u.prenom FROM invitations AS i
+			LEFT JOIN events AS e ON e.id = i.idevent
+			LEFT JOIN restaurants AS r ON r.id = e.idrestaurant
+			LEFT JOIN users AS u ON u.id = e.iduser
+			WHERE i.id = '$idinvitation'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function putReponseInvitation($iduser,$idevent,$reponse) {
+	$SQL = "INSERT INTO participationsevents(iduser,idevent,reponse) VALUES('$iduser','$idevent','$reponse')";
+	return SQLInsert($SQL);
+}
+
+function getGroups($iduser) {
+	$SQL = "SELECT id,nom FROM groupes WHERE iduser = '$iduser' ";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function addGroup($iduser,$group,$groupidphone) {
+	$SQL = "INSERT INTO groupes(nom,iduser,idOnTel) VALUES('$group','$iduser','$groupidphone')";
+	return SQLInsert($SQL);
+}
+
+function removeGroup($iduser,$group) {
+	$SQL = "DELETE FROM groupes WHERE iduser = '$iduser' AND nom = '$group'";
+	return SQLDelete($SQL);
+}
+
+function getRestaurants($iduser) {
+	$SQL = "SELECT id,nom FROM restaurants WHERE iduser = '$iduser'";
+	return parcoursRs(SQLSelect($SQL));
+	
+}
+
+function addSondage($iduser,$titre,$description,$groupe) {
+	$SQL = "INSERT INTO sondages(iduser,idgroupe,titre,descriptif) VALUES('$iduser','$groupe','$titre','$description')";
+	return SQLInsert($SQL);
+}
+
+function getGroupById($idgroupe) {
+	$SQL = "SELECT nom FROM groupes WHERE id = '$idgroupe' ";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getRestaurantById($idrestaurant) {
+	$SQL = "SELECT nom FROM restaurants WHERE id = '$idrestaurant'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function addPropositionRestaurant($idsondage,$idrestaurant) {
+	$SQL = "INSERT INTO propositionsrestaurant(idsondage,idrestaurant) VALUES('$idsondage','$idrestaurant')";
+	return SQLInsert($SQL);
+}
+
+function addPropositionDate($idsondage,$datepropose) {
+	$SQL = "INSERT INTO propositionsdate(idsondage,datepropose) VALUES('$idsondage','$datepropose')";
+	return SQLInsert($SQL);
+}
+
+function getContactByNumber($numero) {
+	$SQL = "SELECT id FROM users WHERE tel = '$numero'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getLienContactGroup($idcontact,$groupe) {
+	$SQL = "SELECT id FROM liens_users_groupes WHERE iduser = '$idcontact' AND idgroupe = '$groupe'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function addLienContactGroupe($idcontact,$groupe) {
+	$SQL = "INSERT INTO liens_users_groupes(iduser,idgroupe) VALUES('$idcontact','$groupe')";
+	return SQLInsert($SQL);
+}
+
+function getInOnTelGroup($idgroupe) {
+	$SQL = "SELECT idOnTel FROM groupes WHERE id = '$idgroupe'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getAllSondagesUser($iduser) {
+	$SQL = "SELECT id,titre FROM sondages WHERE iduser = '$iduser' AND isArchived = 0";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getResultatsDateSondage($idsondage) {
+	$SQL = "SELECT count(*) AS nbre, d.datepropose as choixdate, d.id AS iddate FROM reponsessondages AS r
+			JOIN propositionsdate as d on d.id = r.iddate
+			WHERE r.idsondage = '$idsondage'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getUsersResultatsDateSondage($idsondage,$iddate) {
+	$SQL = "SELECT u.login FROM users AS u 
+			JOIN reponsessondages AS r ON r.iduser = u.id
+			WHERE r.idsondage = '$idsondage' AND r.iddate = '$iddate'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getResultatsRestaurantSondage($idsondage) {
+	$SQL = "SELECT count(*) AS nbre, r.nom AS choixresto, r.id AS idrestaurant FROM reponsessondages AS rs
+			JOIN propositionsrestaurant as p on p.id = rs.idrestaurant
+            JOIN restaurants as r on p.idrestaurant = r.id
+			WHERE rs.idsondage = '$idsondage'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getUsersResultatsRestaurantSondage($idsondage,$idrestaurant) {
+	$SQL = "SELECT u.login FROM users AS u 
+			JOIN reponsessondages AS r ON r.iduser = u.id
+			WHERE r.idsondage = '$idsondage' AND r.idrestaurant = '$idrestaurant'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getGroupByIdSondage($idsondage) {
+	$SQL = "SELECT g.nom, g.id FROM groupes AS g 
+			JOIN sondages AS s ON s.idgroupe = g.id
+			WHERE s.id = '$idsondage'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getRestaurantBySondageName($idsondage,$nomrestaurant) {
+	$SQL ="SELECT r.id FROM restaurants AS r JOIN propositionsrestaurant AS s ON s.idrestaurant = r.id WHERE s.idsondage = '$idsondage' AND r.nom = '$nomrestaurant'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function addEvent($titre,$dateevent,$heure,$restaurant,$iduser,$idgroupe) {
+	$SQL = "INSERT INTO events(nom,dateEvent,heureDebut,idrestaurant,iduser,idgroupe) VALUES('$titre','$dateevent','$heure','$restaurant','$iduser','$idgroupe')";
+	return SQLInsert($SQL);
+}
+
+function archiverSondage($idsondage) {
+	$SQL = "UPDATE sondages SET isArchived = 1 WHERE id='$idsondage'";
+	SQLUpdate($SQL);
+}
+
+function getAllEventsUser($iduser) {
+	$SQL = "SELECT id,nom FROM events WHERE iduser = '$iduser' AND isArchived = 0";
+	return parcoursRs(SQLSelect($SQL));
 }
 
 /*

@@ -332,6 +332,53 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
                 e.printStackTrace();
             }
         }
+        else if(action.equals("getGroupByIdSondage")) {
+            try {
+                String val = result.getString("groupname");
+                JSONArray json = new JSONArray(val);
+
+                EventCreationActivityRecapitulatif eventCreationActivityRecapitulatif = (EventCreationActivityRecapitulatif) mAct.act;
+                eventCreationActivityRecapitulatif.getGroupName(json);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getRestaurantBySondageName")) {
+            try {
+                String val = result.getString("idrestaurant");
+                JSONArray json = new JSONArray(val);
+
+                EventCreationActivityRecapitulatif eventCreationActivityRecapitulatif = (EventCreationActivityRecapitulatif) mAct.act;
+                eventCreationActivityRecapitulatif.getIdRestaurant(json);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("addEvent")) {
+            try {
+                String val = result.getString("event");
+
+                EventCreationActivityRecapitulatif eventCreationActivityRecapitulatif = (EventCreationActivityRecapitulatif) mAct.act;
+                eventCreationActivityRecapitulatif.eventSent(val);
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getAllEventsUser")) {
+            try {
+                String val = result.getString("events");
+                JSONArray json = new JSONArray(val);
+
+                EventsFragment eventFragment = (EventsFragment) mAct.frag.findFragmentByTag("events");
+                eventFragment.displayResult("events",json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

@@ -50,7 +50,7 @@ public class ContactsActivity  extends AppCompatActivity {
         namecontactsList = new ArrayList<String>();
 
         for(String id : groupenameid.split("_")[1].split(",")) {
-            contactsList = fetchGroupMembers(id,this);
+            contactsList.addAll(fetchGroupMembers(id,this));
         }
 
 

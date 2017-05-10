@@ -18,6 +18,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import projet.jet.GeneralActivity;
@@ -58,6 +59,9 @@ public class ResultatsSondageActivity extends AppCompatActivity {
 
         restAct = new RestActivity();
 
+        listDateChecked = new ArrayList<String>();
+        listRestaurantChecked = new ArrayList<String>();
+
         titreSondage = (TextView) findViewById(R.id.textViewtitreSondageReusltat);
         tableChoixJours = (TableLayout) findViewById(R.id.table_choixJours);
         tableChoixRestaurants = (TableLayout) findViewById(R.id.table_choixRestaurants);
@@ -77,10 +81,10 @@ public class ResultatsSondageActivity extends AppCompatActivity {
         btnCreationEvenement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(listDateChecked.size() > 1) {
+                if(listDateChecked.size() > 1 || listDateChecked.size() == 0) {
                     Toast.makeText(getApplicationContext(),"Only one date must be selected !",Toast.LENGTH_SHORT).show();
                 }
-                else if(listRestaurantChecked.size() > 1) {
+                else if(listRestaurantChecked.size() > 1 || listRestaurantChecked.size() == 0) {
                     Toast.makeText(getApplicationContext(),"Only one restaurant must be selected !",Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -98,6 +102,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
         Intent gotocreationevent = new Intent(this, EventCreationActivityRecapitulatif.class);
         gotocreationevent.putExtra("dateselected",dateSelected);
         gotocreationevent.putExtra("restaurant", restaurantSelected);
+        gotocreationevent.putExtra("idsondage", idsondage);
         startActivity(gotocreationevent);
     }
 
@@ -226,10 +231,10 @@ public class ResultatsSondageActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked) {
-                        listRestaurantChecked.add(choixdate);
+                        listRestaurantChecked.add(choixrestaurant);
                     }
                     else {
-                        listRestaurantChecked.remove(choixdate);
+                        listRestaurantChecked.remove(choixrestaurant);
                     }
                 }
             });

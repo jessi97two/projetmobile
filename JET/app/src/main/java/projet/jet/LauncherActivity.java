@@ -1,22 +1,28 @@
 package projet.jet;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.provider.ContactsContract;
+import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-import projet.jet.activity.ContactsActivity;
 import projet.jet.activity.RestActivity;
 import projet.jet.classe.Contact;
 import projet.jet.classe.Group;
-import projet.jet.fragments.GroupsFragment;
 
 /**
  * Created by Jess on 18/12/2016.
@@ -64,11 +70,26 @@ public class LauncherActivity extends Activity {
         }
     }
 
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission is granted
+                Toast.makeText(this, "OURRAAAAHHH", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private void majGroups() {
 
+        ArrayList<String> groupTitle = new ArrayList<String>();
 
-        GroupsFragment groupsFragment = new GroupsFragment();
-        ArrayList<Group> listGroupsOnThePhone =  groupsFragment.fetchGroups(this);
+        ArrayList<Group> listGroupsOnThePhone =  chargerGroups();
 
         ArrayList<String> listGroupsToAdd = new ArrayList<String>();
         ArrayList<String> listGroupsToRemove = new ArrayList<String>();
@@ -132,6 +153,74 @@ public class LauncherActivity extends Activity {
                 e.printStackTrace();
             }
         }
+
+    }
+
+    public ArrayList<Group> chargerGroups() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS}, PERMISSIONS_REQUEST_READ_CONTACTS);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        } else {
+            // Android version is lesser than 6.0 or the permission is already granted.
+        }
+
+        ArrayList<Group> groupList = new ArrayList<Group>();
+        String[] projection = new String[]{ContactsContract.Groups._ID,ContactsContract.Groups.TITLE};
+
+
+        Cursor cursor=null;
+        ContentResolver contentResolver = getContentResolver();
+        try {
+            cursor = contentResolver.query(ContactsContract.Groups.CONTENT_URI, null,null, null,null);
+        }
+        catch (Exception ex)
+        {
+            Log.e("Content.Cursor",ex.getMessage() );
+        }
+
+        ArrayList<String> groupTitle = new ArrayList<String>();
+
+
+        Log.i("Ola","Test");
+        while(cursor.moveToNext()){
+            Group item = new Group();
+            item.id = cursor.getString(cursor.getColumnIndex(ContactsContract.Groups._ID));
+            String groupName =     cursor.getString(cursor.getColumnIndex(ContactsContract.Groups.TITLE));
+
+            if(groupName.contains("Group:"))
+                groupName = groupName.substring(groupName.indexOf("Group:")+"Group:".length()).trim();
+
+            if(groupName.contains("Favorite_"))
+                groupName = "Favorite";
+
+            if(groupName.contains("Starred in Android") || groupName.contains("My Contacts"))
+                continue;
+
+            if(groupTitle.contains(groupName)){
+                for(Group group:groupList){
+                    if(group.name.equals(groupName)){
+                        group.id += ","+item.id;
+                        break;
+                    }
+                }
+            }else{
+                groupTitle.add(groupName);
+                item.name = groupName;
+                groupList.add(item);
+            }
+
+        }
+
+        cursor.close();
+        Collections.sort(groupList,new Comparator<Group>() {
+            public int compare(Group item1, Group item2) {
+                return item2.name.compareTo(item1.name)<0
+                        ?0:-1;
+            }
+        });
+        return groupList;
+
 
     }
 }
