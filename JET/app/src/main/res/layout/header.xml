@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="fitXY"
-        android:src="@drawable/background_argent" />
+        android:src="@drawable/fond1brume" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Akash Bangad"
-            android:textColor="#fff"
+            android:textColor="#000"
             android:paddingTop="20dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:layout_marginLeft="35px" />

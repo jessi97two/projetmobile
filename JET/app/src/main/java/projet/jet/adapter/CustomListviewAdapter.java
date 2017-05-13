@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import projet.jet.GlobalApp;
 import projet.jet.R;
 import projet.jet.activity.ContactsActivity;
+import projet.jet.activity.InformationsEventActivity;
 import projet.jet.activity.InvitationInformationsActivity;
 import projet.jet.activity.ResultatsSondageActivity;
 import projet.jet.activity.SondageInformationsActivity;
@@ -114,7 +115,11 @@ public class CustomListviewAdapter extends BaseAdapter {
                 btnInfo.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-
+                        Bundle bundle = new Bundle();
+                        bundle.putString("idevent", id);
+                        Intent gotoinfosevents = new Intent(activity, InformationsEventActivity.class);
+                        gotoinfosevents.putExtras(bundle);
+                        activity.startActivity(gotoinfosevents);
                     }
                 });
             }

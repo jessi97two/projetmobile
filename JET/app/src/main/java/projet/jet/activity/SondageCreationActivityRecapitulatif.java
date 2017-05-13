@@ -126,8 +126,11 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
 
     public void lancerSondage() {
 
+        String titrebis = titre.replace(" ","__");
+        String descriptionbis = description.replace(" ","__");
+
         String qs = "action=addSondage&iduser=" + ((GlobalApp)getApplication()).prefs.getString("id","") + "&titre="
-                + titre + "&description=" + description + "&groupe=" + groupe;
+                + titrebis + "&description=" + descriptionbis + "&groupe=" + groupe;
         restAct.envoiRequete(qs,"addSondage",(GlobalApp) getApplication(),null,this);
 
     }

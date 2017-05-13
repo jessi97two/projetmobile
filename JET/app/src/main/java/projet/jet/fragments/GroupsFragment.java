@@ -97,7 +97,6 @@ public class GroupsFragment extends Fragment {
         ArrayList<String> groupTitle = new ArrayList<String>();
 
 
-        Log.i("Ola","Test");
         while(cursor.moveToNext()){
             Group item = new Group();
             item.id = cursor.getString(cursor.getColumnIndex(ContactsContract.Groups._ID));

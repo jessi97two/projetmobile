@@ -18,8 +18,10 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
+import projet.jet.activity.ContactsActivity;
 import projet.jet.activity.RestActivity;
 import projet.jet.classe.Contact;
 import projet.jet.classe.Group;
@@ -31,8 +33,10 @@ public class LauncherActivity extends Activity {
 
     GlobalApp ga;
     RestActivity restAct;
-    List<String> listGroupsReceived = new ArrayList<String>();
+    private List<String> listGroupsReceived = new ArrayList<String>();
     List<Contact> contactsList = new ArrayList<Contact>();
+    private HashMap<String,List<Contact>> mapContactsGroups = new HashMap<String,List<Contact>>();
+    private String idTelGroupeEnCours;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +82,7 @@ public class LauncherActivity extends Activity {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                Toast.makeText(this, "OURRAAAAHHH", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Access contacts ok", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Until you grant the permission, we canot display the names", Toast.LENGTH_SHORT).show();
             }
@@ -95,10 +99,18 @@ public class LauncherActivity extends Activity {
         ArrayList<String> listGroupsToRemove = new ArrayList<String>();
 
 
-        if(listGroupsOnThePhone.size() != listGroupsReceived.size()) {
+    //    if(listGroupsOnThePhone.size() != listGroupsReceived.size()) {
             // test if group is already in the database , if not put the group into the listGroupsToAdd
             for(Group group : listGroupsOnThePhone) {
-                if(!(listGroupsReceived.contains(group.name))) {
+                boolean foundA = false;
+                for(String groupreceived : listGroupsReceived) {
+                    String groupname = groupreceived.split("_")[0];
+                    if(groupname.equals(group.name)) {
+                        foundA = true;
+                        break;
+                    }
+                }
+                if(foundA == false) {
                     listGroupsToAdd.add(group.name + "_" + group.id);
                 }
             }
@@ -108,27 +120,34 @@ public class LauncherActivity extends Activity {
                 boolean found = false;
                 for(String group : listGroupsReceived) {
                     for(Group groupPhone : listGroupsOnThePhone) {
-                        if(groupPhone.name.equals(group)) {
+                        if(groupPhone.name.equals(group.split("_")[0])) {
                             found = true;
                         }
                     }
                     if(found == false){
-                        listGroupsToRemove.add(group);
+                        listGroupsToRemove.add(group.split("_")[0] + "_" + group.split("_")[1]);
                     }
                 }
             }
 
+            // add le group , puis get son id, pour add les contacts lié à ce groupe
             for(String group : listGroupsToAdd) {
+                idTelGroupeEnCours = group.split("_")[1];
                 String req = "action=addGroup&iduser=" + ga.prefs.getString("id","") + "&groupName=" + group.split("_")[0]
                         + "&groupidphone=" + group.split("_")[1];
                 restAct.envoiRequete(req,"addGroup",ga,null,this);
             }
 
             for(String group : listGroupsToRemove) {
-                String req = "action=removeGroup&iduser=" + ga.prefs.getString("id","") + "&groupName=" + group;
+                String reqc = "action=removeLiensGroupContacts&iduser=" + ga.prefs.getString("id","") + "&idgroupe=" + group.split("_")[1];
+                restAct.envoiRequete(reqc,"removeLiensGroupContacts",ga,null,this);
+
+                String req = "action=removeGroup&iduser=" + ga.prefs.getString("id","") + "&groupName=" + group.split("_")[0];
                 restAct.envoiRequete(req,"removeGroup",ga,null,this);
             }
-        }
+
+
+        //}
 
 
         // go to general activity
@@ -143,7 +162,8 @@ public class LauncherActivity extends Activity {
             try {
                 if(json != null) {
                     for (int l=0; l < json.length(); l++) {
-                        listGroupsReceived.add(json.getJSONObject(l).getString("nom"));
+                        listGroupsReceived.add(json.getJSONObject(l).getString("nom") + "_" + json.getJSONObject(l).getString("id") +
+                                "_" + json.getJSONObject(l).getString("idOnTel") );
                     }
                 }
 
@@ -182,7 +202,6 @@ public class LauncherActivity extends Activity {
         ArrayList<String> groupTitle = new ArrayList<String>();
 
 
-        Log.i("Ola","Test");
         while(cursor.moveToNext()){
             Group item = new Group();
             item.id = cursor.getString(cursor.getColumnIndex(ContactsContract.Groups._ID));
@@ -221,6 +240,18 @@ public class LauncherActivity extends Activity {
         });
         return groupList;
 
+    }
 
+    public void addContactsGroup(String idgroup) {
+        List<Contact> list = mapContactsGroups.get(idTelGroupeEnCours);
+        for(Contact contact : list) {
+            String numero = contact.phNo;
+            String nom = contact.name;
+
+            String num = numero.replace("+33","0");
+            String qs = "action=addLienContactGroupe&iduser=" + ((GlobalApp)getApplication()).prefs.getString("id","") + "&numero="
+                    + num + "&idgroupe=" + idgroup;
+            restAct.envoiRequete(qs,"addLienContactGroupe",(GlobalApp) getApplication(),null,this);
+        }
     }
 }

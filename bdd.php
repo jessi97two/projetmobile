@@ -123,7 +123,7 @@ function putReponseInvitation($iduser,$idevent,$reponse) {
 }
 
 function getGroups($iduser) {
-	$SQL = "SELECT id,nom FROM groupes WHERE iduser = '$iduser' ";
+	$SQL = "SELECT id,nom,idOnTel FROM groupes WHERE iduser = '$iduser' ";
 	return parcoursRs(SQLSelect($SQL));
 }
 
@@ -247,6 +247,25 @@ function archiverSondage($idsondage) {
 function getAllEventsUser($iduser) {
 	$SQL = "SELECT id,nom FROM events WHERE iduser = '$iduser' AND isArchived = 0";
 	return parcoursRs(SQLSelect($SQL));
+}
+
+function getInfosEvent($idevent) {
+	$SQL = "SELECT e.nom AS nomEvent,e.dateEvent,e.heureDebut,r.nom AS restaurant FROM events AS e 
+			JOIN restaurants AS r ON r.id = e.idrestaurant 
+			WHERE e.id = '$idevent'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getReponsesUsersEvent($idevent) {
+	$SQL = "SELECT u.login, p.reponse FROM events AS e  
+			JOIN participationsevents AS p ON p.idevent = e.id
+			JOIN users AS u ON u.id = p.iduser
+			WHERE e.id = '$idevent'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function removeLiensGroupContacts($idgroupe) {
+	
 }
 
 /*

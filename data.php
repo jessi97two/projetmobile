@@ -191,8 +191,11 @@ session_start();
 			if($iduser = valider("iduser"))
 			if($groupidphone = valider("groupidphone"))
 			if($group = valider("groupName")) {
-				addGroup($iduser,$group,$groupidphone);
-				$data["groupe"] = "1";
+				$groupe = addGroup($iduser,$group,$groupidphone);
+				$data["groupe"] = $groupe;
+			}
+			else {
+				$data["groupe"] = "0";
 			}
 
 		}
@@ -253,8 +256,13 @@ session_start();
 			if($titre = valider("titre"))
 			if($description = valider("description"))
 			if($groupe = valider("groupe")) {
-				$idsondage = addSondage($iduser,$titre,$description,$groupe);
+				$titremodif = str_replace("__"," ",$titre);
+				$descriptionmodif = str_replace("__"," ",$description);
+				$idsondage = addSondage($iduser,$titremodif,$descriptionmodif,$groupe);
 				$data["sondage"] = $idsondage;
+			}
+			else {
+				$data["sondage"] = "0";
 			}
 		}
 		else if($data["action"] == "addProprositionRestaurant") {
@@ -292,7 +300,7 @@ session_start();
 					}
 				}
 				else {
-					$data["contact"] = "-2"; // signifie que le contact n'existe pas
+					$data["contact"] = "-2"; // signifie que le contact n'existe pas dans les users
 				}
 			}
 		}
@@ -422,6 +430,31 @@ session_start();
 					$data["events"] = "0";
 				}
 			}
+		}
+		else if($data["action"] == "getInfosEvent") {
+			if($idevent = valider("idevent")) {
+				$event = getInfosEvent($idevent);
+				if(count($event)) {
+					$data["event"] = $event;
+				}
+				else {
+					$data["event"] = "0";
+				}
+			}
+		}
+		else if($data["action"] == "getReponsesUsersEvent") {
+			if($idevent = valider("idevent")) {
+				$reponsesevent = getReponsesUsersEvent($idevent);
+				if(count($reponsesevent)) {
+					$data["reponsesevent"] = $reponsesevent;
+				}
+				else {
+					$data["reponsesevent"] = "0";
+				}
+			}
+		}
+		else if($data["action"] == "removeLiensGroupContacts") {
+			
 		}
 	}
 

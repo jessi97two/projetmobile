@@ -163,6 +163,10 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
         else if(action.equals("addGroup")) {
             try {
                 String res  = result.getString("groupe");
+                if(Integer.parseInt(res) > 0) {
+                    LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
+                    launcherActivity.addContactsGroup(res);
+                }
                 if(res.equals("1")) {
                     LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
                 }
@@ -374,6 +378,30 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
 
                 EventsFragment eventFragment = (EventsFragment) mAct.frag.findFragmentByTag("events");
                 eventFragment.displayResult("events",json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getInfosEvent")) {
+            try {
+                String val = result.getString("event");
+                JSONArray json = new JSONArray(val);
+
+                InformationsEventActivity informationsEventActivity = (InformationsEventActivity) mAct.act;
+                informationsEventActivity.displayResult("infos",json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getReponsesUsersEvent")) {
+            try {
+                String val = result.getString("reponsesevent");
+                JSONArray json = new JSONArray(val);
+
+                InformationsEventActivity informationsEventActivity = (InformationsEventActivity) mAct.act;
+                informationsEventActivity.displayResult("reponsesevent",json);
 
             } catch (JSONException e) {
                 e.printStackTrace();
