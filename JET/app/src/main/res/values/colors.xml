@@ -10,4 +10,5 @@
     <color name="ColorPrimary">#FF5722</color>
     <color name="FondItemDrawer">#000</color>
     <color name="ColorBackgroundOrange">#FFAB33</color>
+    <color name="inputtextLogin">#000000</color>
 </resources>

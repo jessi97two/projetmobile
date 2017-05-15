@@ -264,6 +264,10 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
             try {
                 String res  = result.getString("contact");
 
+                if(res.equals("-2")) {
+                    SondageCreationActivityRecapitulatif sondageCreationActivityRecapitulatif = (SondageCreationActivityRecapitulatif) mAct.act;
+                    sondageCreationActivityRecapitulatif.sendSMS();
+                }
              //   SondageCreationActivityRecapitulatif sondageCreationActivityRecapitulatif = (SondageCreationActivityRecapitulatif) mAct.act;
                // sondageCreationActivityRecapitulatif.lancerSondage();
             } catch (JSONException e) {

@@ -1,13 +1,18 @@
 package projet.jet.activity;
 
+import android.Manifest;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +52,9 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
 
     private int index = 0;
 
+    public static final String SENT_SMS_ACTION_NAME = "SMS_SENT";
+    public static final String DELIVERED_SMS_ACTION_NAME = "SMS_DELIVERED";
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +70,7 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
         restaurantsList = getIntent().getExtras().getStringArrayList("restaurants");
         groupe = getIntent().getStringExtra("groupe");
 
-
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
 
         restAct = new RestActivity();
 
@@ -186,7 +194,7 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
 
         Intent gotohomepage = new Intent(this, GeneralActivity.class);
         startActivity(gotohomepage);
-        finish();
+        this.finish();
     }
 
     private void complete() {
@@ -208,6 +216,37 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
         txtDate.setText(dates);
         txtRestaurants.setText(restaurants);
         txtGroupe.setText(nomgroupe);
+    }
+
+    public void sendSMS() {
+
+        String numero = "+33617981600";
+        String message = "Tu as reçu une invitation sur l'application Just Eat Together par un de tes amis. " +
+                            "N'hésite pas à installer l'application si tu souhaites consulter tes invitations " +
+                            "ou même organiser des sorties au restaurant avec tes amis ou ta famille.";
+        try {
+            //SmsManager smsManager = SmsManager.getDefault();
+            //smsManager.sendTextMessage(numero, null, message, null, null);
+            PendingIntent sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SENT_SMS_ACTION_NAME), 0);
+            PendingIntent deliveredPI = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(DELIVERED_SMS_ACTION_NAME), 0);
+
+            SmsManager smsManager = SmsManager.getDefault();
+            ArrayList<String> parts = smsManager.divideMessage(message);
+
+            ArrayList<PendingIntent> sendList = new ArrayList<>();
+            sendList.add(sentPI);
+
+            ArrayList<PendingIntent> deliverList = new ArrayList<>();
+            deliverList.add(deliveredPI);
+
+            smsManager.sendMultipartTextMessage(numero, null, parts, sendList, deliverList);
+
+            Toast.makeText(getApplicationContext(), "SMS Sent!", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(),"SMS faild, please try again later!",Toast.LENGTH_LONG).show();
+        e.printStackTrace();
+    }
+
     }
 }
 
