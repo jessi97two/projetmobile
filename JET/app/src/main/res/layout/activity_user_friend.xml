@@ -65,7 +65,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:id="@+id/imageButtonSearchAmongFriends"
-                        android:src="@drawable/abc_ic_search_api_mtrl_alpha"
+                        android:src="@drawable/abc_ic_ab_back_mtrl_am_alpha"
                         android:background="@android:color/transparent" />
                 </LinearLayout>
 
