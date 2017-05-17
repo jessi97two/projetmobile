@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +21,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
 import projet.jet.activity.RestaurantsActivity;
 import projet.jet.fragments.AccountFragment;
 import projet.jet.fragments.EventsFragment;
@@ -26,8 +28,6 @@ import projet.jet.fragments.GroupsFragment;
 import projet.jet.fragments.HomeFragment;
 import projet.jet.fragments.RestoFragment;
 
-=======
->>>>>>> origin/master
 
 /**
  * Created by Jess on 18/12/2016.
@@ -41,6 +41,24 @@ public class GeneralActivity extends AppCompatActivity {
 
     GlobalApp ga;
 
+    // index to identify current nav menu item
+    public static int navItemIndex = 0;
+
+    // tags used to attach the fragments
+    private static final String TAG_HOME = "home";
+    private static final String TAG_RESTAURANTS = "restaurants";
+    private static final String TAG_GROUPES = "groupes";
+    private static final String TAG_EVENTS = "events";
+    private static final String TAG_ACCOUNT = "account";
+    public static String CURRENT_TAG = TAG_HOME;
+
+    // toolbar titles respected to selected nav menu item
+    private String[] activityTitles;
+
+    // flag to load home fragment when user presses back key
+    private boolean shouldLoadHomeFragOnBackPress = true;
+    private Handler mHandler;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +68,8 @@ public class GeneralActivity extends AppCompatActivity {
         // Initializing Toolbar and setting it as the actionbar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mHandler = new Handler();
 
         //Initializing NavigationView
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
@@ -71,44 +91,22 @@ public class GeneralActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()){
 
                     //Replacing the main content with ContentFragment Which is our Inbox View;
-                    case R.id.inbox:
-                        Toast.makeText(getApplicationContext(),"Inbox Selected", Toast.LENGTH_SHORT).show();
-                        ContentFragment fragment = new ContentFragment();
-                        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.frame,fragment);
-                        fragmentTransaction.commit();
-                        return true;
-
-                    case R.id.fbaccount:
-                        Intent gotoFBLogin = new Intent(GeneralActivity.this, FacebookActivity.class);
-                        startActivity(gotoFBLogin);
-                        Toast.makeText(getApplicationContext(),"Fb account Selected",Toast.LENGTH_SHORT).show();
+                    case R.id.home:
+                        Toast.makeText(getApplicationContext(),"Home Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.account:
                         Toast.makeText(getApplicationContext(),"Account Selected",Toast.LENGTH_SHORT).show();
                         return true;
-<<<<<<< HEAD
                     case R.id.restaurants:
                         Intent restaurantPage = new Intent(GeneralActivity.this, RestaurantsActivity.class);
                         startActivity(restaurantPage);
                         Toast.makeText(getApplicationContext(),"Restaurants Selected",Toast.LENGTH_SHORT).show();
-=======
-                    case R.id.friends:
-                        Intent gotoFriendsList = new Intent(GeneralActivity.this, UserFriendsActivity.class);
-                        startActivity(gotoFriendsList);
-                        Toast.makeText(getApplicationContext(),"Friends Selected",Toast.LENGTH_SHORT).show();
->>>>>>> origin/master
                         return true;
-                    case R.id.connect:
-                        Intent gotoConnect = new Intent(GeneralActivity.this, ConnectActivity.class);
-                        startActivity(gotoConnect);
-                        Toast.makeText(getApplicationContext(),"Connect Selected",Toast.LENGTH_SHORT).show();
+
+                    case R.id.groups:
+                        Toast.makeText(getApplicationContext(),"Groupes Selected",Toast.LENGTH_SHORT).show();
                         return true;
-                    case R.id.favoris:
-                        Intent gotoFavoris = new Intent(GeneralActivity.this, Favorite_restaurant.class);
-                        Toast.makeText(getApplicationContext(),"Favoris Selected",Toast.LENGTH_SHORT).show();
-                        startActivity(gotoFavoris);
-                        return true;
+
                     case R.id.events:
                         Toast.makeText(getApplicationContext(),"Events Selected",Toast.LENGTH_SHORT).show();
                         return true;
@@ -140,6 +138,10 @@ public class GeneralActivity extends AppCompatActivity {
         //Setting the actionbarToggle to drawer layout
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
+        // load toolbar titles from string resources
+        activityTitles = getResources().getStringArray(R.array.nav_item_activity_titles);
+
+
         //calling sync state is necessay or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
 
@@ -147,7 +149,6 @@ public class GeneralActivity extends AppCompatActivity {
         View hv  =  navigationView.getHeaderView(0);
         usernameheader = (TextView) hv.findViewById(R.id.usernameheader);
         usernameheader.setText(ga.prefs.getString("login",""));
-<<<<<<< HEAD
 
         // initializing navigation menu
         setUpNavigationView();
@@ -320,8 +321,6 @@ public class GeneralActivity extends AppCompatActivity {
 
         //calling sync state is necessary or else your hamburger icon wont show up
         actionBarDrawerToggle.syncState();
-=======
->>>>>>> origin/master
     }
 
     @Override
@@ -354,7 +353,6 @@ public class GeneralActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-<<<<<<< HEAD
 
     public static void setCurrentTag(String currentTag) {
         CURRENT_TAG = currentTag;
@@ -363,6 +361,4 @@ public class GeneralActivity extends AppCompatActivity {
     public static void setNavItemIndex(int navItemIndex) {
         GeneralActivity.navItemIndex = navItemIndex;
     }
-=======
->>>>>>> origin/master
 }

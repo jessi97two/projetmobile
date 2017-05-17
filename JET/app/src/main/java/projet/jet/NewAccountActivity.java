@@ -8,6 +8,8 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,7 +33,7 @@ import java.net.URL;
 /**
  * Created by Jess on 02/12/2016.
  */
-public class NewAccountActivity extends Activity {
+public class NewAccountActivity extends AppCompatActivity {
 
     EditText edtnom;
     EditText edtprenom;
@@ -42,12 +44,20 @@ public class NewAccountActivity extends Activity {
     EditText edttel;
     Button btnEnregistrerInsc;
     TextView registerErrorMsg;
-    ImageButton btnBackToLogin;
+
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creation_compte);
+
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Création compte JET");
+
+
         edtnom = (EditText) findViewById(R.id.editTextNom);
         edtprenom = (EditText) findViewById(R.id.editTextPrenom);
         edtlogin = (EditText) findViewById(R.id.editTextLoginInsc);
@@ -57,15 +67,7 @@ public class NewAccountActivity extends Activity {
         edttel = (EditText) findViewById(R.id.editTextTel);
 
         registerErrorMsg = (TextView) findViewById(R.id.register_error);
-        btnBackToLogin = (ImageButton) findViewById(R.id.imageButtonBack);
-        btnBackToLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent backtoLogin = new Intent(NewAccountActivity.this, LoginActivity.class);
-                startActivity(backtoLogin);
-                finish();
-            }
-        });
+
 
         btnEnregistrerInsc = (Button) findViewById(R.id.buttonEnregistrerInsc);
         btnEnregistrerInsc.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +152,7 @@ public class NewAccountActivity extends Activity {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.1.86/projetmobile/data.php";
+                    String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
                     String qs = "action=inscription" + "&nom=" + nom + "&prenom=" + prenom + "&login=" + login + "&password=" + password + "&mail=" + mail + "&tel=" + tel;
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG INSCRIPTION","url utilisée : " + url.toString());

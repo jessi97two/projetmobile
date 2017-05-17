@@ -1,9 +1,30 @@
 package projet.jet;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.provider.ContactsContract;
+import android.util.Log;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+
+import projet.jet.activity.ContactsActivity;
+import projet.jet.activity.RestActivity;
+import projet.jet.classe.Contact;
+import projet.jet.classe.Group;
 
 /**
  * Created by Jess on 18/12/2016.
@@ -11,6 +32,11 @@ import android.os.PersistableBundle;
 public class LauncherActivity extends Activity {
 
     GlobalApp ga;
+    RestActivity restAct;
+    private List<String> listGroupsReceived = new ArrayList<String>();
+    List<Contact> contactsList = new ArrayList<Contact>();
+    private HashMap<String,List<Contact>> mapContactsGroups = new HashMap<String,List<Contact>>();
+    private String idTelGroupeEnCours;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -27,9 +53,14 @@ public class LauncherActivity extends Activity {
             String pwd = ga.prefs.getString("password","");
             String id = ga.prefs.getString("id","");
             if(!(login.equals("")) && !(pwd.equals(""))) {
-                Intent gotoGeneral = new Intent(LauncherActivity.this, GeneralActivity.class);
-                startActivity(gotoGeneral);
-                finish();
+                // check groups
+
+                restAct = new RestActivity();
+
+                String qs1 = "action=getGroups&iduser=";
+                restAct.envoiRequete(qs1+ ga.prefs.getString("id",""),"getGroups",ga,null,this);
+
+
             }
             else {
                 Intent gotoLogin = new Intent(LauncherActivity.this, LoginActivity.class);
@@ -42,7 +73,6 @@ public class LauncherActivity extends Activity {
             startActivity(gotoLogin);
         }
     }
-<<<<<<< HEAD
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
@@ -225,6 +255,4 @@ public class LauncherActivity extends Activity {
             restAct.envoiRequete(qs,"addLienContactGroupe",(GlobalApp) getApplication(),null,this);
         }
     }
-=======
->>>>>>> origin/master
 }

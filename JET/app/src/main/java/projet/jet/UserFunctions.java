@@ -78,7 +78,7 @@ public class UserFunctions {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://172.20.10.3/projetmobile/data.php";
+                    String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG AJOUT EN AMI","url utilisée : " + url.toString());
                     HttpURLConnection urlConnection = null;

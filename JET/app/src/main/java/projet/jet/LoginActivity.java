@@ -7,6 +7,7 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,12 +35,14 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtLogin;
     private EditText edtPwd;
 
+
     GlobalApp ga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accueil_view);
+
         ga = (GlobalApp) getApplication();
 
         edtLogin = (EditText) findViewById(R.id.editTextLoginAccueil);
@@ -87,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.1.86/projetmobile/data.php";
+                    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
                     String qs = "action=connexion" + "&login=" + login + "&password=" + password;
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG CONNEXION","url utilisée : " + url.toString());
@@ -134,8 +137,8 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString("id",json.getString("idUser"));
                             editor.commit();
 
-                            Intent versGeneralPAge = new Intent(LoginActivity.this,GeneralActivity.class);
-                            startActivity(versGeneralPAge);
+                            Intent versLauncherPage = new Intent(LoginActivity.this,LauncherActivity.class);
+                            startActivity(versLauncherPage);
                             finish();
                         }
                     } catch (JSONException e) {

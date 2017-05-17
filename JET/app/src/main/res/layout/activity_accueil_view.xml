@@ -14,14 +14,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView"
-            android:src="@drawable/img1" />
+            android:src="@drawable/logologin2" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#8bb7f4f5"
+        android:background="#FFAB33"
         android:baselineAligned="true">
 
         <LinearLayout
@@ -59,7 +59,7 @@
                     android:layout_weight="0"
                     android:singleLine="false"
                     android:textCursorDrawable="@null"
-                    android:textColor="@color/inputtext"
+                    android:textColor="@color/inputtextLogin"
                     android:background="@drawable/input_item" />
 
             </LinearLayout>
@@ -118,8 +118,12 @@
                     android:layout_height="wrap_content"
                     android:text="Sign in"
                     android:id="@+id/buttonSignIn"
-                    android:background="#9767d8f7"
-                    android:width="400px" />
+                    android:width="400px"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/buttonlogin"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -160,8 +164,12 @@
                     android:layout_height="wrap_content"
                     android:text="New account"
                     android:id="@+id/buttonNewAccount"
-                    android:background="#ffffff"
-                    android:width="400px" />
+                    android:width="400px"
+                    android:shadowDx="0"
+                    android:shadowDy="0"
+                    android:shadowRadius="5"
+                    android:textColor="#FFFFFF"
+                    android:background="@drawable/buttonnewaccount"/>
             </LinearLayout>
         </LinearLayout>
 

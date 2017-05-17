@@ -2,25 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="projet.jet">
 
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-=======
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.INTERNET" />
->>>>>>> origin/master
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-<<<<<<< HEAD
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-=======
->>>>>>> origin/master
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -29,13 +20,11 @@
     <application
         android:name=".GlobalApp"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/logo2"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".LauncherActivity"
-            android:label="Just Eat Together">
+        <activity android:name=".LauncherActivity" android:label="Just Eat Together">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,7 +38,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version"/>
-<<<<<<< HEAD
 
         <activity android:name=".LoginActivity" android:label="Sign in" />
         <activity android:name=".NewAccountActivity" android:label="New Account" />
@@ -75,56 +63,9 @@
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@style/AppTheme"
             android:label="@string/app_name" />
-=======
->>>>>>> origin/master
 
-        <activity
-            android:name=".LoginActivity"
-            android:label="Sign in" />
-        <activity
-            android:name=".NewAccountActivity"
-            android:label="New Account" />
-        <activity
-            android:name=".GeneralActivity"
-            android:label="General" />
-        <activity
-            android:name=".UserFriendsActivity"
-            android:label="General" />
-        <activity
-            android:name=".FacebookLoggedActivity"
-            android:label="General" />
-        <activity
-            android:name=".FriendsFacebookActivity"
-            android:label="General" />
-        <activity
-            android:name=".FacebookActivity"
-            android:label="General" />
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
-
-        <activity
-            android:name="com.facebook.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name=".ConnectActivity"
-            android:label="Connect">
-            <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable_friend" />
-        </activity>
-        <activity android:name=".Favorite_restaurant"></activity>
-        <activity android:name=".RestaurantInfoViewActivity"></activity>
     </application>
+
+
 
 </manifest>
