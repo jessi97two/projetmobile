@@ -414,10 +414,17 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
         else if(action.equals("getContactsGroupUser")) {
             try {
                 String val = result.getString("contactsgroupe");
-                JSONArray json = new JSONArray(val);
+                if(val.equals("0")) {
+                    ContactsActivity contactsActivity = (ContactsActivity) mAct.act;
+                    contactsActivity.completeListBddVide();
+                }
+                else {
+                    JSONArray json = new JSONArray(val);
 
-                ContactsActivity contactsActivity = (ContactsActivity) mAct.act;
-                contactsActivity.completeList(json);
+                    ContactsActivity contactsActivity = (ContactsActivity) mAct.act;
+                    contactsActivity.completeList(json);
+                }
+
 
             } catch (JSONException e) {
                 e.printStackTrace();

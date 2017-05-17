@@ -20,6 +20,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import projet.jet.GlobalApp;
 import projet.jet.R;
@@ -39,6 +40,7 @@ public class ContactsActivity  extends AppCompatActivity {
     protected GlobalApp ga;
     RestActivity restAct;
     private String idgroupe;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,13 +68,25 @@ public class ContactsActivity  extends AppCompatActivity {
             contactsList.addAll(fetchGroupMembers(id,this));
         }
 
+        // clear doublons.
+        List<Contact> list1 = new ArrayList<>();
+        List<String> list2 = new ArrayList<>();
+        for(Contact c : contactsList) {
+            if(list2.contains(c.name)) {
+                list1.add(c);
+            }
+            else {
+                list2.add(c.name);
+            }
+        }
+
+        for(Contact c : list1) {
+            contactsList.remove(c);
+        }
+
         //get the id in base
         String req = "action=getIdGroupByName&nomgroupe="+groupename+"&iduser="+ga.prefs.getString("id","");
         restAct.envoiRequete(req,"getIdGroupByName",ga,null,this);
-
-
-
-
 
 
 
@@ -176,5 +190,19 @@ public class ContactsActivity  extends AppCompatActivity {
         //get users linked to the user
         String qs = "action=getContactsGroupUser&iduser=" + ga.prefs.getString("id","") + "&idgroupe=" + idgroupe;
         restAct.envoiRequete(qs,"getContactsGroupUser",ga,null,this);
+    }
+
+    public void completeListBddVide() {
+        for(Contact contact : contactsList) {
+            namecontactsList.add(contact.name + "_0");
+        }
+
+        if(namecontactsList.size() > 0) {
+            // ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, namecontactsList); // simple textview for list item
+            //listviewContacts.setAdapter(adapter);
+
+            CustomListviewAdapter customListviewAdapterad = new CustomListviewAdapter("contactsgroups",this, namecontactsList,getApplication(),this);
+            listviewContacts.setAdapter(customListviewAdapterad);
+        }
     }
 }

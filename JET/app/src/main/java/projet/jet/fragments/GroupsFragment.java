@@ -71,7 +71,13 @@ public class GroupsFragment extends Fragment {
                 if( keyCode == KeyEvent.KEYCODE_BACK ){
                     ((GeneralActivity) getActivity()).setNavItemIndex(0);
                     ((GeneralActivity) getActivity()).getHomeFragment();
-                    ((GeneralActivity) getActivity()).loadHomeFragment();
+
+                /*    HomeFragment nextFrag= new HomeFragment();
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.frame, nextFrag,null)
+                            .addToBackStack(null)
+                            .commit();
+                */
                     return true;
                 }
                 return false;
