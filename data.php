@@ -456,6 +456,82 @@ session_start();
 		else if($data["action"] == "removeLiensGroupContacts") {
 			
 		}
+		else if($data["action"] == "getContactsGroupUser") {
+			if($iduser = valider("iduser"))
+			if($idgroupe = valider("idgroupe")) {
+				$contactsgroupe = getContactsGroupUser($iduser,$idgroupe);
+				if(count($contactsgroupe)) {
+					$data["contactsgroupe"] = $contactsgroupe;
+				}
+				else {
+					$data["contactsgroupe"] = "0";
+				}
+			}
+			else {
+					$data["contactsgroupe"] = "-1";
+			}
+		}
+		else if($data["action"] == "getIdGroupByName") {
+			if($iduser = valider("iduser"))
+			if($nomgroupe = valider("nomgroupe")) {
+				$groupe = getIdGroupByName($iduser,$nomgroupe);
+				if(count($groupe)) {
+					$data["groupe"] = $groupe;
+				}
+				else {
+					$data["groupe"] = "0";
+				}
+			}
+		}
+		else if($data["action"] == "getFavoris") {
+            if($iduser = valider("iduser")) {
+                $getFavoris = getFavoris($iduser);
+                if(count($getFavoris) > 0) {
+                    $data["favoris"] = $getFavoris;
+                }
+                else {
+                    $data["favoris"] = "0";
+                }
+            }
+        }
+        else if($data["action"] == "insertRestaurant") {
+            if($nom = valider("nom"))
+            if($idGoogle = valider("idGoogle"))
+            if($idUser = valider("idUser")){
+                $adresse = valider("adresse");
+                $contact = valider("contact");
+                $data["idRestaurant"] = ajouterRestaurant($nom,$adresse,$contact,$idGoogle);
+                $idRestaurant = $data["idRestaurant"];
+                ajouterFavoris($idUser, $idRestaurant, $idGoogle);
+                $data["statutinscription"] = "1"; // 1 signifie que l'inscription a bien été faite
+            }
+        }
+        else if($data["action"] == "isFavori") {
+            if($idUser = valider("idUser"))
+            if($idGoogle = valider("idGoogle")){
+                $isFavori = isFavori($idUser,$idGoogle);
+                if(count($isFavori) > 0) {
+                    $data["isfavori"] = true;
+                }
+                else {
+                    $data["isfavori"] = false;
+                }
+            }
+        }
+        else if($data["action"] == "removeFavori") {
+            if($idUser = valider("idUser"))
+            if($idGoogle = valider("idGoogle")){
+                removeFavori($idUser,$idGoogle);
+            }
+        }
+        else if($data["action"] == "removeRestaurant") {
+            if($idGoogle = valider("idGoogle"))
+            if($idUser = valider("idUser")){
+                removeRestaurant($idGoogle);
+                removeFavori($idUser, $idGoogle);
+                $data["statutsuppression"] = "1"; // 1 signifie que l'inscription a bien été faite
+            }
+        }
 	}
 
 	echo json_encode($data);

@@ -268,6 +268,57 @@ function removeLiensGroupContacts($idgroupe) {
 	
 }
 
+function getContactsGroupUser($iduser,$idgroupe) {
+	$SQL = "SELECT u.tel FROM users AS u 
+			JOIN liens_users_groupes AS l ON l.iduser = u.id
+			JOIN groupes AS g ON g.id = l.idgroupe 
+			WHERE g.iduser = '$iduser' AND l.idgroupe = '$idgroupe'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getIdGroupByName($iduser,$nomgroupe) {
+	$SQL = "SELECT id FROM groupes WHERE iduser = '$iduser' AND nom = '$nomgroupe'";
+	return parcoursRs(SQLSelect($SQL));
+}
+
+function getFavoris($iduser) {
+    $SQL = "SELECT * FROM restaurants as r
+                JOIN  favoris as f
+                WHERE f.iduser = '$iduser'
+                AND   r.id = f.idrestaurant";
+    return parcoursRs(SQLSelect($SQL));
+}
+
+function ajouterRestaurant($nom,$adresse,$contact,$idGoogle)
+{
+    $SQL = "INSERT INTO restaurants(nom,adresse,contact,idGoogle) VALUES ('$nom','$adresse','$contact','$idGoogle')";
+    return SQLInsert($SQL);
+}
+
+function ajouterFavoris($idUser, $idRestaurant, $idGoogle)
+{
+    $SQL = "INSERT INTO favoris(iduser, idrestaurant, idGoogle) VALUES ('$idUser','$idRestaurant', '$idGoogle')";
+    return SQLInsert($SQL);
+}
+
+function isFavori($idUser, $idGoogle)
+{
+    $SQL = "SELECT id FROM favoris WHERE iduser='$idUser' AND idGoogle='$idGoogle'";
+    return parcoursRs(SQLSelect($SQL));
+}
+
+function removeRestaurant($idGoogle)
+{
+    $SQL = "DELETE FROM restaurants WHERE idGoogle='$idGoogle'";
+    return SQLDelete($SQL);
+}
+
+function removeFavori($idUser, $idGoogle)
+{
+    $SQL = "DELETE FROM favoris WHERE iduser='$idUser' AND idGoogle='$idGoogle'";
+    return SQLDelete($SQL);
+}
+
 /*
 
 SELECT s.titre, s.descriptif, u.login as sondeur, p.datepropose FROM sondages AS s
