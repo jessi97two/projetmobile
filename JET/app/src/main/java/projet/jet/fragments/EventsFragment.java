@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
+import projet.jet.GeneralActivity;
 import projet.jet.GlobalApp;
 import projet.jet.R;
 import projet.jet.activity.RestActivity;
@@ -47,7 +49,20 @@ public class EventsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.content_events_fragment,container,false);
-        v.setFocusable(true);
+
+
+        v.setFocusableInTouchMode(true);
+        v.setOnKeyListener( new View.OnKeyListener(){
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event ){
+                if( keyCode == KeyEvent.KEYCODE_BACK ){
+                    ((GeneralActivity) getActivity()).setNavItemIndex(0);
+                    ((GeneralActivity) getActivity()).getHomeFragment();
+                    return true;
+                }
+                return false;
+            }
+        } );
 
         final Activity a = getActivity();
         restAct = new RestActivity();

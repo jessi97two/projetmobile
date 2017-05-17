@@ -411,6 +411,30 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
                 e.printStackTrace();
             }
         }
+        else if(action.equals("getContactsGroupUser")) {
+            try {
+                String val = result.getString("contactsgroupe");
+                JSONArray json = new JSONArray(val);
+
+                ContactsActivity contactsActivity = (ContactsActivity) mAct.act;
+                contactsActivity.completeList(json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        else if(action.equals("getIdGroupByName")) {
+            try {
+                String val = result.getString("groupe");
+                JSONArray json = new JSONArray(val);
+
+                ContactsActivity contactsActivity = (ContactsActivity) mAct.act;
+                contactsActivity.getIdGroupe(json);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

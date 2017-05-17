@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import projet.jet.activity.RestaurantsActivity;
 import projet.jet.fragments.AccountFragment;
 import projet.jet.fragments.EventsFragment;
 import projet.jet.fragments.GroupsFragment;
@@ -97,6 +98,8 @@ public class GeneralActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Account Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.restaurants:
+                        Intent restaurantPage = new Intent(GeneralActivity.this, RestaurantsActivity.class);
+                        startActivity(restaurantPage);
                         Toast.makeText(getApplicationContext(),"Restaurants Selected",Toast.LENGTH_SHORT).show();
                         return true;
 
@@ -169,7 +172,7 @@ public class GeneralActivity extends AppCompatActivity {
      * Returns respected fragment that user
      * selected from navigation menu
      */
-    private void loadHomeFragment() {
+    public void loadHomeFragment() {
         // selecting appropriate nav menu item
         selectNavMenu();
 
@@ -218,27 +221,29 @@ public class GeneralActivity extends AppCompatActivity {
         invalidateOptionsMenu();
     }
 
-    private Fragment getHomeFragment() {
+    public Fragment getHomeFragment() {
         switch (navItemIndex) {
             case 0:
                 // home
                 HomeFragment homeFragment = new HomeFragment();
                 return homeFragment;
             case 1:
-                // photos
+                // account
                 AccountFragment accountFragment = new AccountFragment();
                 return accountFragment;
             case 2:
-                // movies fragment
-                RestoFragment restoFragment = new RestoFragment();
-                return restoFragment;
+                // restaurants fragment
+                Intent restaurantPage = new Intent(GeneralActivity.this, RestaurantsActivity.class);
+                startActivity(restaurantPage);
+                //RestoFragment restoFragment = new RestoFragment();
+                //return restoFragment;
             case 4:
-                // notifications fragment
+                // events fragment
                 EventsFragment eventsFragment = new EventsFragment();
                 return eventsFragment;
 
             case 3:
-                // settings fragment
+                // groupes fragment
                 GroupsFragment groupsFragment = new GroupsFragment();
                 return groupsFragment;
             default:
@@ -349,5 +354,11 @@ public class GeneralActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static void setCurrentTag(String currentTag) {
+        CURRENT_TAG = currentTag;
+    }
 
+    public static void setNavItemIndex(int navItemIndex) {
+        GeneralActivity.navItemIndex = navItemIndex;
+    }
 }

@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import projet.jet.GeneralActivity;
 import projet.jet.R;
 import projet.jet.adapter.CustomListviewAdapter;
 import projet.jet.classe.Group;
@@ -61,6 +63,20 @@ public class GroupsFragment extends Fragment {
         View v = inflater.inflate(R.layout.content_groups_fragment,container,false);
 
         listviewGroups = (ListView)v.findViewById(R.id.listViewGroups);
+
+        v.setFocusableInTouchMode(true);
+        v.setOnKeyListener( new View.OnKeyListener(){
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event ){
+                if( keyCode == KeyEvent.KEYCODE_BACK ){
+                    ((GeneralActivity) getActivity()).setNavItemIndex(0);
+                    ((GeneralActivity) getActivity()).getHomeFragment();
+                    ((GeneralActivity) getActivity()).loadHomeFragment();
+                    return true;
+                }
+                return false;
+            }
+        } );
 
         return v;
     }

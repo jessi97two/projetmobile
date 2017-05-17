@@ -243,7 +243,8 @@ public class LauncherActivity extends Activity {
     }
 
     public void addContactsGroup(String idgroup) {
-        List<Contact> list = mapContactsGroups.get(idTelGroupeEnCours);
+        List<Contact> list = new ArrayList<Contact>();
+        list = mapContactsGroups.get(idTelGroupeEnCours);
         for(Contact contact : list) {
             String numero = contact.phNo;
             String nom = contact.name;

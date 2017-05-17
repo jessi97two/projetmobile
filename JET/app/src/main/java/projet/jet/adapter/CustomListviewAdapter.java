@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -131,12 +132,15 @@ public class CustomListviewAdapter extends BaseAdapter {
 
 
             final String titre = data.get(position).split("_")[0];
+            final String idontel = data.get(position).split("_")[1];
             final String groupnameid = data.get(position);
             txtGroup.setText(titre);
+
 
             txtGroup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     Bundle bundle = new Bundle();
                     bundle.putString("groupe", groupnameid);
                     Intent gotocontact = new Intent(activity, ContactsActivity.class);
@@ -144,6 +148,19 @@ public class CustomListviewAdapter extends BaseAdapter {
                     activity.startActivity(gotocontact);
                 }
             });
+        }
+        else if(type.equals("contactsgroups")) {
+            convertView= inflater.inflate(R.layout.contacts_listview, parent, false);
+
+            TextView txtContact = (TextView) convertView.findViewById(R.id.nomContact);
+            ImageView imgJet = (ImageView) convertView.findViewById(R.id.imageViewJET);
+
+            txtContact.setText(data.get(position).split("_")[0]);
+            String presence = data.get(position).split("_")[1];
+
+            if(presence.equals("0")) {
+                imgJet.setVisibility(View.INVISIBLE);
+            }
         }
 
         return convertView;

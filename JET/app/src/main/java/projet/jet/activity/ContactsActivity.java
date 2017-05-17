@@ -16,9 +16,14 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
+import projet.jet.GlobalApp;
 import projet.jet.R;
+import projet.jet.adapter.CustomListviewAdapter;
 import projet.jet.classe.Contact;
 
 /**
@@ -29,12 +34,19 @@ public class ContactsActivity  extends AppCompatActivity {
     private Toolbar toolbar;
     private ArrayList<Contact> contactsList;
     private ArrayList<String> namecontactsList;
+    private ArrayList<String> BDDcontactsList;
     private ListView listviewContacts;
+    protected GlobalApp ga;
+    RestActivity restAct;
+    private String idgroupe;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.contacts_activity);
+
+        ga = (GlobalApp) this.getApplication();
+        restAct = new RestActivity();
 
         Intent intent = getIntent();
         final String groupenameid = intent.getStringExtra("groupe");
@@ -48,22 +60,20 @@ public class ContactsActivity  extends AppCompatActivity {
 
         contactsList = new ArrayList<Contact>();
         namecontactsList = new ArrayList<String>();
+        BDDcontactsList = new ArrayList<String>();
 
         for(String id : groupenameid.split("_")[1].split(",")) {
             contactsList.addAll(fetchGroupMembers(id,this));
         }
 
+        //get the id in base
+        String req = "action=getIdGroupByName&nomgroupe="+groupename+"&iduser="+ga.prefs.getString("id","");
+        restAct.envoiRequete(req,"getIdGroupByName",ga,null,this);
 
 
-        for(Contact contact : contactsList) {
-            namecontactsList.add(contact.name);
-        }
 
-        if(namecontactsList.size() > 0) {
-            ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, namecontactsList); // simple textview for list item
 
-            listviewContacts.setAdapter(adapter);
-        }
+
 
 
     }
@@ -119,5 +129,52 @@ public class ContactsActivity  extends AppCompatActivity {
         }
         cursor.close();
         return groupMembers;
+    }
+
+    public void completeList(JSONArray json) {
+        if(json.length() > 0) {
+            try {
+                for(int i=0; i<json.length(); i++) {
+                    String numero = json.getJSONObject(i).getString("tel");
+                    BDDcontactsList.add(numero);
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        for(Contact contact : contactsList) {
+            String numContact = contact.phNo.replace("+33","0");
+            if(BDDcontactsList.contains(numContact)) {
+                namecontactsList.add(contact.name + "_1");
+            }
+            else {
+                namecontactsList.add(contact.name + "_0");
+            }
+        }
+
+        if(namecontactsList.size() > 0) {
+            // ArrayAdapter adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, namecontactsList); // simple textview for list item
+            //listviewContacts.setAdapter(adapter);
+
+            CustomListviewAdapter customListviewAdapterad = new CustomListviewAdapter("contactsgroups",this, namecontactsList,getApplication(),this);
+            listviewContacts.setAdapter(customListviewAdapterad);
+        }
+    }
+
+    public void getIdGroupe(JSONArray json) {
+        if(json.length() > 0) {
+            try {
+                idgroupe = json.getJSONObject(0).getString("id");
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //get users linked to the user
+        String qs = "action=getContactsGroupUser&iduser=" + ga.prefs.getString("id","") + "&idgroupe=" + idgroupe;
+        restAct.envoiRequete(qs,"getContactsGroupUser",ga,null,this);
     }
 }
