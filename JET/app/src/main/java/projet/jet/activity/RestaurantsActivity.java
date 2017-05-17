@@ -173,13 +173,13 @@ public class RestaurantsActivity extends AppCompatActivity implements
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
+            /*final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
             final String placeId = String.valueOf(item.placeId);
             Log.i(LOG_TAG, "Selected: " + item.description);
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-            Log.i(LOG_TAG, "Fetching details for ID: " + item.placeId);
+            Log.i(LOG_TAG, "Fetching details for ID: " + item.placeId);*/
         }
     };
 
@@ -188,7 +188,7 @@ public class RestaurantsActivity extends AppCompatActivity implements
             = new ResultCallback<PlaceBuffer>() {
         @Override
         public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
+            /*if (!places.getStatus().isSuccess()) {
                 Log.e(LOG_TAG, "Place query did not complete. Error: " +
                         places.getStatus().toString());
                 return;
@@ -218,35 +218,35 @@ public class RestaurantsActivity extends AppCompatActivity implements
 
             CustomListviewRestaurantAdapter adapter = new CustomListviewRestaurantAdapter(RestaurantsActivity.this, restaurantName, correspondSeachRestaurant);
             //ArrayAdapter<String> adapter = new ArrayAdapter<String>(Favorite_restaurant.this, R.layout.activity_search_restaurant_listview,restaurantName);
-            listViewSearch.setAdapter(adapter);
+            listViewSearch.setAdapter(adapter);*/
         }
     };
 
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
-        Log.i(LOG_TAG, "Google Places API connected.");
+        /*mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(LOG_TAG, "Google Places API connected.");*/
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        if (i == CAUSE_SERVICE_DISCONNECTED) {
+        /*if (i == CAUSE_SERVICE_DISCONNECTED) {
             Toast.makeText(this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
         } else if (i == CAUSE_NETWORK_LOST) {
             Toast.makeText(this, "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
-        }
+        }*/
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e(LOG_TAG, "Google Places API connection failed with error code: "
+        /*Log.e(LOG_TAG, "Google Places API connection failed with error code: "
                 + connectionResult.getErrorCode());
 
         Toast.makeText(this,
                 "Google Places API connection failed with error code:" +
                         connectionResult.getErrorCode(),
-                Toast.LENGTH_LONG).show();
+                Toast.LENGTH_LONG).show();*/
     }
 
     private class CheckFavoris extends AsyncTask<String, Integer, Boolean> {
@@ -261,7 +261,7 @@ public class RestaurantsActivity extends AppCompatActivity implements
 
         @Override
         protected Boolean doInBackground(String... params) {
-            ConnectivityManager cnMngr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+            /*ConnectivityManager cnMngr = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = cnMngr.getActiveNetworkInfo();
 
             if (netInfo != null && netInfo.isConnected()) {
@@ -287,14 +287,14 @@ public class RestaurantsActivity extends AppCompatActivity implements
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            }
+            }*/
 
             return Boolean.FALSE;
         }
 
         @Override
         protected void onPostExecute(Boolean th) {
-            if (th == true) {
+            /*if (th == true) {
                 if (txtReponse != "") {
                     try {
                         Log.i("DEBUG TEST REP", txtReponse);
@@ -306,12 +306,12 @@ public class RestaurantsActivity extends AppCompatActivity implements
                         e.printStackTrace();
                     }
                 }
-            }
+            }*/
         }
     }
 
 
-    private void displayResult(JSONArray jsonarray) {
+    /*private void displayResult(JSONArray jsonarray) {
 
         ArrayList<String> result = new ArrayList<String>();
 
@@ -349,6 +349,6 @@ public class RestaurantsActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 }
 

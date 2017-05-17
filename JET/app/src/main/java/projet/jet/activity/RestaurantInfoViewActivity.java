@@ -1,9 +1,12 @@
 package projet.jet.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +17,7 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -58,6 +62,7 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
                 .build();
 
         TextView name = (TextView) findViewById(R.id.restaurant_infos_name);
+        //TODO : ne pas afficher phone si null
         TextView phone = (TextView) findViewById(R.id.phone);
         TextView address = (TextView) findViewById(R.id.address);
         ImageView picture = (ImageView) findViewById(R.id.photoRestaurant);
@@ -75,7 +80,21 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
 
         //this.getPlace(mGoogleApiClient, restaurant.getIdGoogle());
 
-
+        ((Button)findViewById(R.id.makeCall)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    //TODO : find uniquement numero de tel
+                    TextView phoneNum = (TextView) findViewById(R.id.phone);
+                    Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                    callIntent.setData(Uri.parse("tel:"+phoneNum.getText()));
+                    startActivity(callIntent);
+                }
+                catch (SecurityException e){
+                    Toast.makeText(getApplicationContext(),"CALL failed, please try again later!",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
         /*String str=phone.getText().toString().trim();
         Intent i = new Intent(Intent.ACTION_CALL, Uri.parse(str));
         try {
@@ -86,8 +105,8 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
         }*/
 
     }
-    public void getPlace(GoogleApiClient _mGoogleApiClient, String _placeId) {
-        Places.GeoDataApi.getPlaceById(_mGoogleApiClient, _placeId)
+    public void getPlace(GoogleApiClient _mGoogleApiClient, final Restaurant _resto) {
+        Places.GeoDataApi.getPlaceById(_mGoogleApiClient, _resto.getIdGoogle())
                 .setResultCallback(new ResultCallback<PlaceBuffer>() {
                     @Override
                     public void onResult(PlaceBuffer places) {
@@ -98,18 +117,22 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
                             Log.d("Longitude is", "" + queriedLocation.longitude);
                         }
                         places.release();
+                        if (map != null) {
+                            if(queriedLocation != null) {
+                                map.addMarker(new MarkerOptions().position(queriedLocation).title(_resto.getName()));
+                                //map.moveCamera(CameraUpdateFactory.newLatLng(queriedLocation));
+                                map.animateCamera(CameraUpdateFactory.newLatLngZoom(queriedLocation, 12.0f));
+                            }
+                            try {
+
+                                mapSettings = map.getUiSettings();
+                                mapSettings.setScrollGesturesEnabled(true);
+                                mapSettings.setZoomControlsEnabled(true);
+                            } catch (SecurityException e) {
+                            }
+                        }
                     }
                 });
-        if (map != null) {
-            map.addMarker(new MarkerOptions().position(queriedLocation).title("Start"));
-            try {
-
-                mapSettings = map.getUiSettings();
-                mapSettings.setScrollGesturesEnabled(true);
-                mapSettings.setZoomControlsEnabled(true);
-            } catch (SecurityException e) {
-            }
-        }
     }
     @Override
     public void onConnectionSuspended(int i) {
@@ -140,6 +163,7 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
         Log.d("MyMap", "onMapReady");
         map = googleMap;
         setUpMap();
+        this.getPlace(mGoogleApiClient, restaurant);
     }
     private void setUpMap() {
 

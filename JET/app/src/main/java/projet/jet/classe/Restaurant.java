@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.Normalizer;
+import java.util.concurrent.ExecutionException;
 
 import projet.jet.CommonsFunctions;
 
@@ -28,7 +29,7 @@ public class Restaurant implements Serializable {
 
     //Communication with PHP
     String txtReponse;
-    String urlData = "http://192.168.1.86/projetmobile/data.php";
+    String urlData = "http://172.20.10.3/projetmobile/data.php";
     String query;
 
     private String name;
@@ -101,14 +102,18 @@ public class Restaurant implements Serializable {
     public boolean isFavori(Context context)
     {
         contextGlobal = context;
-        new isFavori().execute();
-        //while(!wait);
+        try {
+            isFavori = new isFavori().execute().get();
+        }
+        catch(InterruptedException e){}
+        catch (ExecutionException e){}
         return isFavori;
     }
 
-    public void removeFavori()
+    public void removeFavori(Context context)
     {
-        //TODO
+        contextGlobal = context;
+        new removeRestaurantFromFavori().execute();
     }
 
     @Override
@@ -234,14 +239,13 @@ public class Restaurant implements Serializable {
             Log.i("DEBUG TEST","onPostExecute,  res =" + txtReponse);
         }
     }
-    private class isFavori extends AsyncTask<String, Integer, Boolean> {
+    private class removeRestaurantFromFavori extends AsyncTask<String, Integer, Boolean>{
 
         String txtReponse = "";
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            Log.i("DEBUG TEST","onPreExecute");
+            Log.i("DEBUG TEST","onPreExecuteFromRemove");
         }
 
         @Override
@@ -253,7 +257,7 @@ public class Restaurant implements Serializable {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    query = "action=isFavori" +
+                    query = "action=removeRestaurant" +
                             "&idGoogle=" + idGoogle +
                             "&idUser=" + idUser;
 
@@ -287,18 +291,67 @@ public class Restaurant implements Serializable {
 
         @Override
         protected void onPostExecute(Boolean th) {
-            if (th == true) {
-                if (txtReponse != "") {
-                    try {
-                        Log.i("DEBUG TEST REP", txtReponse);
-                        JSONObject jsonobj = new JSONObject(txtReponse);
-                        isFavori = jsonobj.getBoolean("isFavori");
-                        wait=true;
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+            Log.i("DEBUG TEST","onPostExecuteFromRemove,  res =" + txtReponse);
+        }
+    }
+    private class isFavori extends AsyncTask<String, Integer, Boolean>{
+
+        String txtReponse = "";
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.i("DEBUG TEST","onPreExecute");
+        }
+
+        @Override
+        protected Boolean doInBackground(String... args) {
+
+            boolean result = false;
+            ConnectivityManager cnMngr = (ConnectivityManager) contextGlobal.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cnMngr.getActiveNetworkInfo();
+
+            if (netInfo != null && netInfo.isConnected()) {
+                try {
+                    query = "action=isFavori" +
+                            "&idGoogle=" + idGoogle +
+                            "&idUser=" + idUser;
+
+                    query = query.replaceAll("\\s", "%20");
+                    query = query.replaceAll("'", "%27");
+                    query = Normalizer.normalize(query, Normalizer.Form.NFD);
+                    query = query.replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+                    URL url = new URL(urlData + "?" + query);
+                    Log.i("DEBUG CONNEXION", "url utilisée : " + url.toString());
+                    HttpURLConnection urlConnection = null;
+                    urlConnection = (HttpURLConnection) url.openConnection();
+                    urlConnection.connect();
+                    if (urlConnection.getResponseCode() == 200) {
+                        InputStream in = null;
+                        in = new BufferedInputStream(urlConnection.getInputStream());
+                        txtReponse = CommonsFunctions.convertStreamToString(in);
+                        urlConnection.disconnect();
+                        if (txtReponse != "") {
+                            try {
+                                Log.i("DEBUG TEST REP", txtReponse);
+                                JSONObject jsonobj = new JSONObject(txtReponse);
+                                result = jsonobj.getBoolean("isfavori");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        return result;
                     }
+                } catch (MalformedURLException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
                 }
             }
+            return result;
         }
     }
 

@@ -16,9 +16,10 @@ import java.util.Map;
 import projet.jet.R;
 import projet.jet.activity.RestaurantsActivity;
 import projet.jet.classe.Restaurant;
+import projet.jet.fragments.RestoFragment;
 
 /**
- * Created by Jess on 16/05/2017.
+ * Created by dcossart on 15/05/2017.
  */
 public class CustomListviewRestaurantAdapter extends BaseAdapter {
 
@@ -26,6 +27,9 @@ public class CustomListviewRestaurantAdapter extends BaseAdapter {
     private Context mContext;
     private Map mcorrespond;
     private ArrayList<String> restaurants= new ArrayList<String>();
+    Restaurant resto;
+    String name;
+    ImageView favImage;
 
     public CustomListviewRestaurantAdapter(Context context, ArrayList<String> listResto, Map correspond) {
         mContext = context;
@@ -60,23 +64,37 @@ public class CustomListviewRestaurantAdapter extends BaseAdapter {
             row = inflater.inflate(R.layout.activity_search_restaurant_listview, parent, false);
             Log.d(tag, "Successfully completed XML Row Inflation!");
         }
-        String name = getItem(position);
-        Restaurant resto = (Restaurant) mcorrespond.get(name);
-        ImageView favImage= (ImageView) row.findViewById(R.id.imagefav);
-        if (resto.isFavori(mContext))
+        name = getItem(position);
+        resto = (Restaurant) mcorrespond.get(name);
+        favImage = (ImageView) row.findViewById(R.id.imagefav);
+        if (resto.isFavori(mContext)) {
+            resto.isFavori = true;
             favImage.setImageResource(R.drawable.favoris_logo);
-        else
+        }
+        else {
+            resto.isFavori = false;
             favImage.setImageResource(R.drawable.notinfav);
+        }
 
 
         favImage.setClickable(true);
         favImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.i("CUSTOM ADAPTER DEBUG :" + " : " + RestaurantsActivity.class.getName(), "Entered onClick method");
-                Toast.makeText(v.getContext(),
-                        "The favorite list would appear on clicking this icon",
-                        Toast.LENGTH_LONG).show();
+                if (!resto.isFavori) {
+                    resto.insert(mContext);
+                    favImage.setImageResource(R.drawable.favoris_logo);
+                    resto.isFavori = true;
+                }
+                else
+                {
+                    resto.removeFavori(mContext);
+                    favImage.setImageResource(R.drawable.notinfav);
+                    resto.isFavori = false;
+                }
+                //TODO : revoir updateList
+                // RestoFragment contextClass = (RestoFragment) mContext;
+                //contextClass.updateListFavori();
             }
         });
         TextView RestoName = (TextView) row.findViewById(R.id.RestoSearchName);

@@ -233,10 +233,10 @@ public class GeneralActivity extends AppCompatActivity {
                 return accountFragment;
             case 2:
                 // restaurants fragment
-                Intent restaurantPage = new Intent(GeneralActivity.this, RestaurantsActivity.class);
-                startActivity(restaurantPage);
-                //RestoFragment restoFragment = new RestoFragment();
-                //return restoFragment;
+                /*Intent restaurantPage = new Intent(GeneralActivity.this, RestaurantsActivity.class);
+                startActivity(restaurantPage);*/
+                RestoFragment restoFragment = new RestoFragment();
+                return restoFragment;
             case 4:
                 // events fragment
                 EventsFragment eventsFragment = new EventsFragment();

@@ -27,7 +27,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/phone"
-        android:layout_weight="0.08" />
+        android:layout_weight="0.11" />
+
+    <Button
+        android:text="CALL"
+        android:layout_width="50dp"
+        android:layout_gravity="center"
+        android:layout_height="50dp"
+        android:id="@+id/makeCall" />
 
     <TextView
         android:text="TextView"
@@ -35,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/address"
-        android:layout_weight="0.10" />
+        android:layout_weight="0.13" />
 
     <fragment
         android:id="@+id/map"
