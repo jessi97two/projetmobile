@@ -12,5 +12,4 @@
     <include layout="@layout/content_user_friends_list" />
 
 
-
 </android.support.design.widget.CoordinatorLayout>

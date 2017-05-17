@@ -23,4 +23,8 @@
         android:layout_alignParentEnd="true"
         android:id="@+id/imagefav"
         android:layout_alignBottom="@+id/RestoSearchName" />
+<<<<<<< HEAD
 </RelativeLayout>
+=======
+</RelativeLayout>
+>>>>>>> origin/master

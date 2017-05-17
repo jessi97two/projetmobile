@@ -79,8 +79,8 @@ public class UserFriendsActivity extends Activity {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
-                    String qs = "action=getFriends&iduser=" + ga.prefs.getString("id","");
+                    String urlData = "http://192.168.1.86/projetmobile/data.php";
+                    String qs = "action=getFriends&iuser=" + ga.prefs.getString("id","");
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG CONNEXION","url utilisée : " + url.toString());
                     HttpURLConnection urlConnection = null;
@@ -139,8 +139,8 @@ public class UserFriendsActivity extends Activity {
         }
 
         ArrayAdapter adapter = new ArrayAdapter<String>(this, R.layout.activity_user_friends_listview, result); // simple textview for list item
-        ListView listView = (ListView) findViewById(R.id.listViewFriends);
-        listView.setAdapter(adapter);
+        ListView listViewFavoris = (ListView) findViewById(R.id.listViewFavoris);
+        listViewFavoris.setAdapter(adapter);
 
     }
 
