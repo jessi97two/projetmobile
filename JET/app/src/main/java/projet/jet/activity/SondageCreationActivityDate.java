@@ -145,18 +145,18 @@ public class SondageCreationActivityDate extends AppCompatActivity {
 
             // Show selected date
             if(dateSelected.equals("date 1")) {
-                datechoice1.setText(new StringBuilder().append(month + 1)
-                        .append("-").append(day).append("-").append(year)
+                datechoice1.setText(new StringBuilder()
+                        .append(year).append("-").append(month + 1).append("-").append(day)
                         .append(" "));
             }
             else if(dateSelected.equals("date 2")) {
-                datechoice2.setText(new StringBuilder().append(month + 1)
-                        .append("-").append(day).append("-").append(year)
+                datechoice2.setText(new StringBuilder()
+                        .append(year).append("-").append(month + 1).append("-").append(day)
                         .append(" "));
             }
             else if(dateSelected.equals("date 3")) {
-                datechoice3.setText(new StringBuilder().append(month + 1)
-                        .append("-").append(day).append("-").append(year)
+                datechoice3.setText(new StringBuilder()
+                        .append(year).append("-").append(month + 1).append("-").append(day)
                         .append(" "));
             }
         }

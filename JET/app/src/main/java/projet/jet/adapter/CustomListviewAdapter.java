@@ -64,7 +64,7 @@ public class CustomListviewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if(type.equals("sondage") || type.equals("invitation") || type.equals("sondageevents") || type.equals("eventsevents")) {
+        if(type.equals("sondage") || type.equals("invitation") || type.equals("event") ||type.equals("sondageevents") || type.equals("eventsevents")) {
             convertView= inflater.inflate(R.layout.home_fragment_listview, parent, false);
 
             final TextView textTitre = (TextView) convertView.findViewById(R.id.hometitre);
@@ -96,6 +96,18 @@ public class CustomListviewAdapter extends BaseAdapter {
                         Intent gotoinvit = new Intent(activity, InvitationInformationsActivity.class);
                         gotoinvit.putExtras(bundle);
                         activity.startActivity(gotoinvit);
+                    }
+                });
+            }
+            else if(type.equals("event")) {
+                btnInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("idevent", id);
+                        Intent gotoevent = new Intent(activity, InformationsEventActivity.class);
+                        gotoevent.putExtras(bundle);
+                        activity.startActivity(gotoevent);
                     }
                 });
             }

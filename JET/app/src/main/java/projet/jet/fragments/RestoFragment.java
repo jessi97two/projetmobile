@@ -93,6 +93,12 @@ public class RestoFragment extends Fragment implements
 
     public Activity a ;
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        this.updateListFavori();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -295,7 +301,7 @@ public class RestoFragment extends Fragment implements
         try {
             for (int l=0; l < jsonarray.length(); l++) {
                 Restaurant resto = new Restaurant(
-                        jsonarray.getJSONObject(l).getString("IdGoogle"),
+                        jsonarray.getJSONObject(l).getString("idGoogle"),
                         jsonarray.getJSONObject(l).getString("nom"),
                         jsonarray.getJSONObject(l).getString("adresse"),
                         jsonarray.getJSONObject(l).getString("contact"),

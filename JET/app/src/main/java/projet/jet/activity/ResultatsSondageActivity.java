@@ -121,6 +121,9 @@ public class ResultatsSondageActivity extends AppCompatActivity {
                 restAct.envoiRequete(req,"getUsersResultatsDateSondage",(GlobalApp) getApplication(),null, this);
 
             }
+
+            String req2 = "action=getResultatsRestaurantSondage&idsondage=" + idsondage;
+            restAct.envoiRequete(req2,"getResultatsRestaurantSondage",(GlobalApp) getApplication(),null, this);
         }
         catch (JSONException e) {
             e.printStackTrace();
@@ -201,8 +204,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        String req2 = "action=getResultatsRestaurantSondage&idsondage=" + idsondage;
-        restAct.envoiRequete(req2,"getResultatsRestaurantSondage",(GlobalApp) getApplication(),null, this);
+
     }
 
     public void completeTableChoixRestaurants(JSONArray json) {

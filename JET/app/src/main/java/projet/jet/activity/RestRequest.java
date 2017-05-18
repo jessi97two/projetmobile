@@ -310,10 +310,22 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
         else if(action.equals("getUsersResultatsDateSondage")) {
             try {
                 String val = result.getString("resultatsUsersDate");
-                JSONArray json = new JSONArray(val);
+
+                JSONArray json = new JSONArray();
+
+                if(val.equals("0")) {
+
+                }
+                else {
+                    json = new JSONArray(val);
+
+
+                }
 
                 ResultatsSondageActivity resultatsSondageActivity = (ResultatsSondageActivity) mAct.act;
                 resultatsSondageActivity.completeTableChoixDates(json);
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -332,7 +344,17 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
         else if(action.equals("getUsersResultatsRestaurantSondage")) {
             try {
                 String val = result.getString("resultatsUsersRestaurant");
-                JSONArray json = new JSONArray(val);
+
+                JSONArray json = new JSONArray();
+
+                if(val.equals("0")) {
+
+                }
+                else {
+                    json = new JSONArray(val);
+
+
+                }
 
                 ResultatsSondageActivity resultatsSondageActivity = (ResultatsSondageActivity) mAct.act;
                 resultatsSondageActivity.completeTableChoixRestaurants(json);

@@ -162,7 +162,8 @@ public class RestaurantSearchActivity extends AppCompatActivity implements
                         //TO ADD
                         //place.getRating()
                         //place.getWebsiteUri()
-                        ga.prefs.getString("id", ""));
+                        ga.prefs.getString("id", ""),
+                        Float.toString(place.getRating()));
                 restaurantName.add(newRestaurant.getName());
                 correspondSeachRestaurant.put(newRestaurant.getName(), newRestaurant);
             }

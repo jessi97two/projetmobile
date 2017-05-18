@@ -68,6 +68,7 @@ public class HomeFragment extends Fragment {
 
         txtSondages = (TextView) v.findViewById(R.id.txtSondagesVides);
         txtInvitations = (TextView) v.findViewById(R.id.txtInvitationVide);
+        txtEvents = (TextView) v.findViewById(R.id.txtEventVide);
 
         return v;
     }
@@ -120,18 +121,26 @@ public class HomeFragment extends Fragment {
             }
         }
         else if(type.equals("events")) {
-            try {
-                for (int l=0; l < jsonarray.length(); l++) {
-                    result.add(jsonarray.getJSONObject(l).getString("nom")  );
+            if(jsonarray.length() > 0) {
+                txtEvents.setVisibility(View.INVISIBLE);
+
+                try {
+                    for (int l=0; l < jsonarray.length(); l++) {
+                        result.add(jsonarray.getJSONObject(l).getString("nom") + "_" + jsonarray.getJSONObject(l).getString("id") );
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+
+                ArrayAdapter adapter = new ArrayAdapter<String>(a, android.R.layout.simple_list_item_1, result); // simple textview for list item
+                CustomListviewAdapter customListviewAdapterad = new CustomListviewAdapter("event",this.getActivity(), result,a.getApplication(),a);
+                mListViewEvents.setAdapter(customListviewAdapterad);
+                ListUtils.setDynamicHeight(mListViewEvents);
+            }
+            else {
+                txtEvents.setVisibility(View.VISIBLE);
             }
 
-            ArrayAdapter adapter = new ArrayAdapter<String>(a, android.R.layout.simple_list_item_1, result); // simple textview for list item
-
-            mListViewEvents.setAdapter(adapter);
-            ListUtils.setDynamicHeight(mListViewEvents);
         }
 
     }

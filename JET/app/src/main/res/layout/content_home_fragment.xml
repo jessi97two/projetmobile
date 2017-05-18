@@ -158,6 +158,20 @@
                         android:id="@+id/listViewEvents"
                         android:background="@drawable/shape" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:text="Vous n&apos;avez pas de nouveaux évènements."
+                        android:id="@+id/txtEventVide"
+                        android:layout_marginLeft="10px" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

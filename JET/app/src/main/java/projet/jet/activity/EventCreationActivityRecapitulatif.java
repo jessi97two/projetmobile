@@ -124,6 +124,10 @@ public class EventCreationActivityRecapitulatif extends AppCompatActivity {
             String req = "action=archiverSondage&idsondage="+idsondage;
             restAct.envoiRequete(req,"archiverSondage",(GlobalApp) getApplication(),null, this);
 
+            String req2 = "action=sendInvitation&idevent="+res+"&idgroupe="+idgroupe ;
+            restAct.envoiRequete(req2,"sendInvitation",(GlobalApp) getApplication(),null, this);
+
+
             Intent gotogeneral = new Intent(this, GeneralActivity.class);
             startActivity(gotogeneral);
             this.finish();

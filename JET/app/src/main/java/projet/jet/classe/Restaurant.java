@@ -29,7 +29,7 @@ public class Restaurant implements Serializable {
 
     //Communication with PHP
     String txtReponse;
-    String urlData = "http://192.168.43.120/projetmobile/data.php";
+    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
     String query;
 
     private String name;
@@ -210,10 +210,12 @@ public class Restaurant implements Serializable {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
+                    String numero = Phone.replace(" ","");
+                    numero = numero.replace("+33","0");
                     query = "action=insertRestaurant" +
                             "&nom=" + name +
                             "&adresse=" + adresse +
-                            "&contact=" + Phone +
+                            "&contact=" + numero +
                             "&idGoogle=" + idGoogle +
                             "&idUser=" + idUser +
                             "&note=" + note;
