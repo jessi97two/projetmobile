@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +37,7 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks,
         OnMapReadyCallback {
 
-
+    private static final String LOG_TAG_MAP = "MAP :";
     private static final String LOG_TAG = "Restaurant infos act :";
     Restaurant restaurant;
     private GoogleMap map;
@@ -62,32 +61,50 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
                 .build();
 
         TextView name = (TextView) findViewById(R.id.restaurant_infos_name);
-        //TODO : ne pas afficher phone si null
         TextView phone = (TextView) findViewById(R.id.phone);
         TextView address = (TextView) findViewById(R.id.address);
         ImageView picture = (ImageView) findViewById(R.id.photoRestaurant);
+        TextView note = (TextView)findViewById(R.id.note);
 
 
         Bundle b = this.getIntent().getExtras();
         if (b != null) {
             restaurant = (Restaurant) b.get("restaurant");
 
+            //RESTAURANT'S NAME
             name.setText(restaurant.getName());
+            if (restaurant.getName().isEmpty()) {
+                name.setVisibility(View.INVISIBLE);
+            }
+
+            //RESTAURANT'S PHONE NUMBER
             phone.setText("Contact : " + restaurant.getPhone());
+            if (restaurant.getPhone().isEmpty()) {
+                phone.setVisibility(View.INVISIBLE);
+                findViewById(R.id.makeCall).setVisibility(View.INVISIBLE);
+            }
+
+            //RESTAURANT'S ADDRESS
             address.setText("Adresse : " + restaurant.getAdresse());
+            if (restaurant.getAdresse().isEmpty()) {
+                address.setVisibility(View.INVISIBLE);
+            }
+
+            //RESTAURANT'S NOTE
+            note.setText("Note : "+restaurant.getNote());
+            if (restaurant.getNote().isEmpty()) {
+                note.setVisibility(View.INVISIBLE);
+            }
         }
-        //map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMapAsync();
 
-        //this.getPlace(mGoogleApiClient, restaurant.getIdGoogle());
-
-        ((Button)findViewById(R.id.makeCall)).setOnClickListener(new View.OnClickListener() {
+        ((ImageView)findViewById(R.id.makeCall)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    //TODO : find uniquement numero de tel
                     TextView phoneNum = (TextView) findViewById(R.id.phone);
+                    String num = (String) phoneNum.getText().toString().replace("Contact : ","");
                     Intent callIntent = new Intent(Intent.ACTION_DIAL);
-                    callIntent.setData(Uri.parse("tel:"+phoneNum.getText()));
+                    callIntent.setData(Uri.parse("tel:"+num));
                     startActivity(callIntent);
                 }
                 catch (SecurityException e){
@@ -95,16 +112,8 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
                 }
             }
         });
-        /*String str=phone.getText().toString().trim();
-        Intent i = new Intent(Intent.ACTION_CALL, Uri.parse(str));
-        try {
-            startActivity(i);
-        }
-        catch (android.content.ActivityNotFoundException e){
-            Toast.makeText(getApplicationContext(),"App failed",Toast.LENGTH_LONG).show();
-        }*/
-
     }
+
     public void getPlace(GoogleApiClient _mGoogleApiClient, final Restaurant _resto) {
         Places.GeoDataApi.getPlaceById(_mGoogleApiClient, _resto.getIdGoogle())
                 .setResultCallback(new ResultCallback<PlaceBuffer>() {
@@ -120,16 +129,15 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
                         if (map != null) {
                             if(queriedLocation != null) {
                                 map.addMarker(new MarkerOptions().position(queriedLocation).title(_resto.getName()));
-                                //map.moveCamera(CameraUpdateFactory.newLatLng(queriedLocation));
                                 map.animateCamera(CameraUpdateFactory.newLatLngZoom(queriedLocation, 12.0f));
                             }
-                            try {
+                            /*try {
 
                                 mapSettings = map.getUiSettings();
                                 mapSettings.setScrollGesturesEnabled(true);
                                 mapSettings.setZoomControlsEnabled(true);
                             } catch (SecurityException e) {
-                            }
+                            }*/
                         }
                     }
                 });
@@ -160,20 +168,21 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Log.d("MyMap", "onMapReady");
+        Log.d(LOG_TAG_MAP, "onMapReady()");
         map = googleMap;
         setUpMap();
         this.getPlace(mGoogleApiClient, restaurant);
     }
     private void setUpMap() {
-
         try {
             map.setMyLocationEnabled(true);
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
             map.getUiSettings().setMapToolbarEnabled(false);
         }
         catch(SecurityException e)
-        {}
+        {
+            Log.e(LOG_TAG_MAP, "Erreur in setUpMap()");
+        }
 
 
         map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -181,7 +190,7 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
             @Override
             public void onMapClick(LatLng point) {
 
-                Log.d("MyMap", "MapClick");
+                Log.d(LOG_TAG_MAP, "MapClick");
 
                 //remove previously placed Marker
                 if (marker != null) {
@@ -189,10 +198,10 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
                 }
 
                 //place marker where user just clicked
-                marker = map.addMarker(new MarkerOptions().position(point).title("Marker")
+                marker = map.addMarker(new MarkerOptions().position(point).title("Point")
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA)));
 
-                Log.d("MyMap", "MapClick After Add Marker");
+                Log.d(LOG_TAG_MAP, "MapClick After Add Marker");
 
             }
         });
@@ -202,7 +211,7 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == 100) {
-            Log.d("MyMap", "onActivityResult " + data.getStringExtra("result"));
+            Log.d(LOG_TAG, "onActivityResult " + data.getStringExtra("result"));
         }
     }
 
@@ -210,25 +219,22 @@ public class RestaurantInfoViewActivity extends AppCompatActivity implements
     protected void onPause() {
         super.onPause();
 
-        Log.d("MyMap", "onPause");
+        Log.d(LOG_TAG, "onPause");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        Log.d("MyMap", "onResume");
+        Log.d(LOG_TAG, "onResume");
         setUpMapIfNeeded();
     }
 
     private void setUpMapIfNeeded() {
-
         if (map == null) {
-
-            Log.d("MyMap", "setUpMapIfNeeded");
+            Log.d(LOG_TAG_MAP, "setUpMapIfNeeded");
             ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMapAsync(this);
         }
     }
-
 }

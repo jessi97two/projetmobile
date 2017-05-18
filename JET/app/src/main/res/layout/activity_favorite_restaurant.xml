@@ -19,6 +19,7 @@
             android:layout_height="wrap_content">
 
             <TextView
+                android:paddingLeft="40px"
                 android:text="Restaurants Favoris"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,7 +47,7 @@
 
                     <ListView
                         android:layout_width="match_parent"
-                        android:layout_height="268dp"
+                        android:layout_height="339dp"
                         android:id="@+id/listViewFavoris"
                         android:layout_below="@+id/textView"
                         android:layout_centerHorizontal="true"

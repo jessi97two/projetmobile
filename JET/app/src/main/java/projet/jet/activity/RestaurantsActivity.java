@@ -281,10 +281,8 @@ public class RestaurantsActivity extends AppCompatActivity implements
                         return Boolean.TRUE;
                     }
                 } catch (MalformedURLException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }*/

@@ -37,6 +37,7 @@ public class Restaurant implements Serializable {
     private String adresse;
     private String Phone;
     private int id;
+    private String note;
     private String idUser;
     Context contextGlobal;
     public boolean isFavori;
@@ -50,12 +51,21 @@ public class Restaurant implements Serializable {
         this.idUser = idUser;
     }
 
-    public Restaurant(String idGoogle, String name, String adresse, String phone, String idUser) {
+    public Restaurant(String idGoogle, String name, String adresse, String phone, String idUser, String note) {
         this.idGoogle = idGoogle;
         this.name = name;
+        this.note = note;
         this.adresse = adresse;
         this.idUser = idUser;
         this.Phone = phone;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getName() {
@@ -139,6 +149,7 @@ public class Restaurant implements Serializable {
                 ", idGoogle='" + idGoogle + '\'' +
                 ", adresse='" + adresse + '\'' +
                 ", Phone='" + Phone + '\'' +
+                ", Note='" + note + '\'' +
                 '}';
     }
 
@@ -204,7 +215,8 @@ public class Restaurant implements Serializable {
                             "&adresse=" + adresse +
                             "&contact=" + Phone +
                             "&idGoogle=" + idGoogle +
-                            "&idUser=" + idUser;
+                            "&idUser=" + idUser +
+                            "&note=" + note;
 
                     query = query.replaceAll("\\s", "%20");
                     query = query.replaceAll("'", "%27");
