@@ -8,15 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 import projet.jet.R;
-import projet.jet.activity.RestaurantsActivity;
 import projet.jet.classe.Restaurant;
-import projet.jet.fragments.RestoFragment;
 
 /**
  * Created by dcossart on 15/05/2017.

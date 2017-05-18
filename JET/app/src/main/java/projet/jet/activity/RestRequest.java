@@ -2,16 +2,12 @@ package projet.jet.activity;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import projet.jet.GeneralActivity;
 import projet.jet.GlobalApp;
-import projet.jet.LauncherActivity;
-import projet.jet.R;
 import projet.jet.fragments.EventsFragment;
 import projet.jet.fragments.HomeFragment;
 

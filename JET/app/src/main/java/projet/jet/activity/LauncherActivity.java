@@ -1,4 +1,4 @@
-package projet.jet;
+package projet.jet.activity;
 
 import android.Manifest;
 import android.app.Activity;
@@ -21,8 +21,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
-import projet.jet.activity.ContactsActivity;
-import projet.jet.activity.RestActivity;
+import projet.jet.GlobalApp;
 import projet.jet.classe.Contact;
 import projet.jet.classe.Group;
 

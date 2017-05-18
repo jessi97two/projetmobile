@@ -2,7 +2,6 @@ package projet.jet.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -21,7 +20,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import projet.jet.GeneralActivity;
 import projet.jet.GlobalApp;
 import projet.jet.R;
 
@@ -152,6 +150,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
     public void completeTableChoixDates(JSONArray json) {
         try {
             String personnes = "";
+            String datechoix = choixdate;
 
             for(int i=0; i<json.length(); i++) {
                 personnes = personnes + " " + json.getJSONObject(i).getString("login");
@@ -184,7 +183,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
             });
 
             TextView c3 = new TextView(this);
-            c3.setText(choixdate);
+            c3.setText(datechoix);
             c3.setBackgroundResource(R.drawable.table_cell_bg);
             c3.setPadding(10,0,10,0);
 
@@ -210,6 +209,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
     public void completeTableChoixRestaurants(JSONArray json) {
         try {
             String personnes = "";
+            String restaurantchoix = choixrestaurant;
 
             for(int i=0; i<json.length(); i++) {
                 personnes = personnes + " " + json.getJSONObject(i).getString("login");
@@ -242,7 +242,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
             });
 
             TextView c3 = new TextView(this);
-            c3.setText(choixrestaurant);
+            c3.setText(restaurantchoix);
             c3.setBackgroundResource(R.drawable.table_cell_bg);
             c3.setPadding(10,0,10,0);
 

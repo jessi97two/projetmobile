@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -20,7 +19,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import projet.jet.GeneralActivity;
 import projet.jet.GlobalApp;
 import projet.jet.R;
 import projet.jet.classe.Contact;

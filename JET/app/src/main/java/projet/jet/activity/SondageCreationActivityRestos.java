@@ -7,6 +7,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,12 +60,18 @@ public class SondageCreationActivityRestos extends AppCompatActivity {
         btnGoToPart4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoPart4 = new Intent(SondageCreationActivityRestos.this, SondageCreationActivityGroupes.class);
-                gotoPart4.putExtra("titre",titre);
-                gotoPart4.putExtra("description", description);
-                gotoPart4.putStringArrayListExtra("date",(ArrayList<String>) datesList);
-                gotoPart4.putStringArrayListExtra("restaurants",(ArrayList<String>)listRestosChecked);
-                startActivity(gotoPart4);
+                if(listRestosChecked.size() == 0) {
+                    Toast.makeText(getApplicationContext(),"Au moins un restaurant doit être sélectionné !",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent gotoPart4 = new Intent(SondageCreationActivityRestos.this, SondageCreationActivityGroupes.class);
+                    gotoPart4.putExtra("titre",titre);
+                    gotoPart4.putExtra("description", description);
+                    gotoPart4.putStringArrayListExtra("date",(ArrayList<String>) datesList);
+                    gotoPart4.putStringArrayListExtra("restaurants",(ArrayList<String>)listRestosChecked);
+                    startActivity(gotoPart4);
+                }
+
             }
         });
     }

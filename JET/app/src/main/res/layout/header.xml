@@ -7,7 +7,7 @@
     android:background="@drawable/background_material"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    tools:context=".GeneralActivity">
+    tools:context=".activity.GeneralActivity">
 
     <ImageView
         android:id="@+id/img_header_bg"

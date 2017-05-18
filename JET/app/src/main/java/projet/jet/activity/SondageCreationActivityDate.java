@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -97,11 +98,17 @@ public class SondageCreationActivityDate extends AppCompatActivity {
                     listDates.add(datechoice3.getText().toString());
                 }
 
-                Intent gotoPart3 = new Intent(SondageCreationActivityDate.this, SondageCreationActivityRestos.class);
-                gotoPart3.putExtra("titre",titre);
-                gotoPart3.putExtra("description",description);
-                gotoPart3.putStringArrayListExtra("date",(ArrayList<String>) listDates);
-                startActivity(gotoPart3);
+                if(listDates.size() == 0) {
+                    Toast.makeText(getApplicationContext(),"Au moins une date doit être sélectionnnée !",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent gotoPart3 = new Intent(SondageCreationActivityDate.this, SondageCreationActivityRestos.class);
+                    gotoPart3.putExtra("titre",titre);
+                    gotoPart3.putExtra("description",description);
+                    gotoPart3.putStringArrayListExtra("date",(ArrayList<String>) listDates);
+                    startActivity(gotoPart3);
+                }
+
             }
         });
     }

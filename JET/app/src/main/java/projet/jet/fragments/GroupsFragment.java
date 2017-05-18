@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import projet.jet.GeneralActivity;
+import projet.jet.activity.GeneralActivity;
 import projet.jet.R;
 import projet.jet.adapter.CustomListviewAdapter;
 import projet.jet.classe.Group;
