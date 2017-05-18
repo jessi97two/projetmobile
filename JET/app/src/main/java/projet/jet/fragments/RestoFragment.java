@@ -130,9 +130,6 @@ public class RestoFragment extends Fragment implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedItem = (String) listViewSearch.getItemAtPosition(position);
-                /*Toast.makeText(RestaurantsActivity.this, "Vous avez cliqué sur : " + selectedItem,
-                        Toast.LENGTH_SHORT).show();*/
-
                 Restaurant viewRestaurant = (Restaurant) correspondSeachRestaurant.get(selectedItem);
                 viewRestaurant.insert(a);
                 new CheckFavoris().execute();
@@ -144,11 +141,7 @@ public class RestoFragment extends Fragment implements
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 String selectedItem = (String) listViewFavoris.getItemAtPosition(position);
-                /*Toast.makeText(RestaurantsActivity.this, "Vous avez cliqué sur le favori : " + selectedItem,
-                        Toast.LENGTH_SHORT).show();*/
-
                 Restaurant favoriRestaurant = (Restaurant) correspondFavoriRestaurant.get(selectedItem);
-
                 Intent gotoRestaurantInfoView = new Intent(a, RestaurantInfoViewActivity.class);
                 gotoRestaurantInfoView.putExtra("restaurant", favoriRestaurant);
                 startActivity(gotoRestaurantInfoView);
@@ -166,8 +159,7 @@ public class RestoFragment extends Fragment implements
             final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
             final String placeId = String.valueOf(item.placeId);
             Log.i(LOG_TAG, "Selected: " + item.description);
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi.getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
             Log.i(LOG_TAG, "Fetching details for ID: " + item.placeId);
         }
@@ -179,18 +171,16 @@ public class RestoFragment extends Fragment implements
         @Override
         public void onResult(PlaceBuffer places) {
             if (!places.getStatus().isSuccess()) {
-                Log.e(LOG_TAG, "Place query did not complete. Error: " +
-                        places.getStatus().toString());
+                Log.e(LOG_TAG, "Place query did not complete. Error: " + places.getStatus().toString());
                 return;
             }
+
             // Selecting the first object buffer.
             final Place place = places.get(0);
-            CharSequence attributions = places.getAttributions();
-
-            //SET RESULT IN ACTIVITY
-            //mNameTextView.setText(Html.fromHtml(place.getName() + ""));
 
             mGoogleApiClient.disconnect();
+
+            //SET RESULT IN ACTIVITY
             if (!restaurantName.contains(place.getName().toString()))
             {
                 Restaurant newRestaurant = new Restaurant(
@@ -198,10 +188,10 @@ public class RestoFragment extends Fragment implements
                         place.getName().toString(),
                         place.getAddress().toString(),
                         place.getPhoneNumber().toString(),
-                        //TO ADD
-                        //place.getRating()
+                        //TODO: ADD
                         //place.getWebsiteUri()
-                        ga.prefs.getString("id", ""));
+                        ga.prefs.getString("id", ""),
+                        Float.toString(place.getRating()));
                 restaurantName.add(newRestaurant.getName());
                 correspondSeachRestaurant.put(newRestaurant.getName(), newRestaurant);
             }
@@ -261,7 +251,7 @@ public class RestoFragment extends Fragment implements
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://172.20.10.3/projetmobile/data.php";
+                    String urlData = "http://192.168.1.86/projetmobile/data.php";
                     String qs = "action=getFavoris&iduser=" + ga.prefs.getString("id", "");
                     URL url = new URL(urlData + "?" + qs);
                     Log.i("DEBUG CONNEXION", "url utilisée : " + url.toString());
@@ -317,7 +307,8 @@ public class RestoFragment extends Fragment implements
                         jsonarray.getJSONObject(l).getString("nom"),
                         jsonarray.getJSONObject(l).getString("adresse"),
                         jsonarray.getJSONObject(l).getString("contact"),
-                        ga.prefs.getString("id", "")
+                        ga.prefs.getString("id", ""),
+                        jsonarray.getJSONObject(l).getString("note")
                 );
                 correspondFavoriRestaurant.put(resto.getName(), resto);
                 result.add(jsonarray.getJSONObject(l).getString("nom"));

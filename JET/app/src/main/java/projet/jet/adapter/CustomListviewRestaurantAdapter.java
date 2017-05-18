@@ -39,17 +39,14 @@ public class CustomListviewRestaurantAdapter extends BaseAdapter {
     }
 
     public int getCount() {
-        // TODO Auto-generated method stub
         return this.restaurants.size();
     }
 
     public String getItem(int index) {
-        // TODO Auto-generated method stub
         return this.restaurants.get(index);
     }
 
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
         return position;
     }
 
