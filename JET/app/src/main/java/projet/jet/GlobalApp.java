@@ -36,7 +36,7 @@ public class GlobalApp extends Application{
         if (qs != null)
         {
             System.setProperty("http.keepAlive", "false");
-            String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
+            String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
 
             try {
                 URL url = new URL(urlData + "?" + qs);

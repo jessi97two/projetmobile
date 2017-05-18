@@ -6,7 +6,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="@mipmap/search_white_icon"
-        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:actionViewClass="android.support.v7.widget.AutoCompleteTextView"
         app:showAsAction="ifRoom|collapseActionView"
         android:title="action_search"/>
     <item

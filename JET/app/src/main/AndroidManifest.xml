@@ -55,6 +55,7 @@
         <activity android:name=".activity.InformationsEventActivity" android:label="Informations event" />
         <activity android:name=".activity.RestaurantInfoViewActivity" android:label="Informations restaurant" />
         <activity android:name=".activity.RestaurantsActivity" android:label="Restaurants" />
+        <activity android:name=".activity.RestaurantSearchActivity" android:label="" />
 
         <meta-data android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id"/>

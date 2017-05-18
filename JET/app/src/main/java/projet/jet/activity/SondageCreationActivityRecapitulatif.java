@@ -194,7 +194,7 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
 
         Intent gotohomepage = new Intent(this, GeneralActivity.class);
         startActivity(gotohomepage);
-        this.finish();
+        finish();
     }
 
     private void complete() {

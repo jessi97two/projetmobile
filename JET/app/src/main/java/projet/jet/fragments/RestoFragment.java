@@ -13,6 +13,8 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +49,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import projet.jet.CommonsFunctions;
@@ -81,7 +84,7 @@ public class RestoFragment extends Fragment implements
 
     private GoogleApiClient mGoogleApiClient;
     private LocationRequest mLocationRequest;
-    ListView listViewSearch;
+    //public ListView listViewSearch;
     ListView listViewFavoris;
 
     ImageButton imgBtnBackToGeneral;
@@ -114,6 +117,7 @@ public class RestoFragment extends Fragment implements
 
         //TODO : AutoCompleteTextView
 
+
         mGoogleApiClient = new GoogleApiClient
                 .Builder(a)
                 .addApi(Places.GEO_DATA_API)
@@ -122,22 +126,9 @@ public class RestoFragment extends Fragment implements
                 .addOnConnectionFailedListener(this)
                 .build();
 
-        listViewSearch = (ListView) v.findViewById(R.id.listSearchRestaurant);
         listViewFavoris = (ListView) v.findViewById(R.id.listViewFavoris);
 
-        listViewSearch.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                String selectedItem = (String) listViewSearch.getItemAtPosition(position);
-                /*Toast.makeText(RestaurantsActivity.this, "Vous avez cliqué sur : " + selectedItem,
-                        Toast.LENGTH_SHORT).show();*/
-
-                Restaurant viewRestaurant = (Restaurant) correspondSeachRestaurant.get(selectedItem);
-                viewRestaurant.insert(a);
-                new CheckFavoris().execute();
-            }
-        });
 
         listViewFavoris.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -206,9 +197,9 @@ public class RestoFragment extends Fragment implements
                 correspondSeachRestaurant.put(newRestaurant.getName(), newRestaurant);
             }
 
-            CustomListviewRestaurantAdapter adapter = new CustomListviewRestaurantAdapter(a, restaurantName, correspondSeachRestaurant);
+           // CustomListviewRestaurantAdapter adapter = new CustomListviewRestaurantAdapter(a, restaurantName, correspondSeachRestaurant);
             //ArrayAdapter<String> adapter = new ArrayAdapter<String>(Favorite_restaurant.this, R.layout.activity_search_restaurant_listview,restaurantName);
-            listViewSearch.setAdapter(adapter);
+            //listViewSearch.setAdapter(adapter);
         }
     };
 
@@ -261,7 +252,7 @@ public class RestoFragment extends Fragment implements
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://172.20.10.3/projetmobile/data.php";
+                    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
                     String qs = "action=getFavoris&iduser=" + ga.prefs.getString("id", "");
                     URL url = new URL(urlData + "?" + qs);
                     Log.i("DEBUG CONNEXION", "url utilisée : " + url.toString());
@@ -343,6 +334,22 @@ public class RestoFragment extends Fragment implements
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        a.getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        AutoCompleteTextView mAutocompleteTextView;
+
+        MenuItem myActionMenuItem = menu.findItem( R.id.action_search);
+        mAutocompleteTextView = (AutoCompleteTextView) myActionMenuItem.getActionView();
+        mAutocompleteTextView.setOnItemClickListener(mAutocompleteClickListener);
+
+        mPlaceArrayAdapter = new PlaceArrayAdapter(a, android.R.layout.simple_list_item_1,BOUNDS_MOUNTAIN_VIEW, null);
+        mAutocompleteTextView.setAdapter(mPlaceArrayAdapter);
+
+    }
+
 }
 
 

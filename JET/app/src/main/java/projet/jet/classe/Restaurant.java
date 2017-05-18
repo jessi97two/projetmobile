@@ -29,7 +29,7 @@ public class Restaurant implements Serializable {
 
     //Communication with PHP
     String txtReponse;
-    String urlData = "http://172.20.10.3/projetmobile/data.php";
+    String urlData = "http://192.168.43.120/projetmobile/data.php";
     String query;
 
     private String name;

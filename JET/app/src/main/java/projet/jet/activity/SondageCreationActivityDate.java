@@ -138,6 +138,7 @@ public class SondageCreationActivityDate extends AppCompatActivity {
         public void onDateSet(DatePicker view, int selectedYear,
                               int selectedMonth, int selectedDay) {
 
+
             year  = selectedYear;
             month = selectedMonth;
             day   = selectedDay;

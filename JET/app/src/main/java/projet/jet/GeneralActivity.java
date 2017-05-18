@@ -18,10 +18,29 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import projet.jet.activity.RestaurantSearchActivity;
 import projet.jet.activity.RestaurantsActivity;
+import projet.jet.adapter.CustomListviewRestaurantAdapter;
+import projet.jet.adapter.PlaceArrayAdapter;
+import projet.jet.classe.Restaurant;
 import projet.jet.fragments.AccountFragment;
 import projet.jet.fragments.EventsFragment;
 import projet.jet.fragments.GroupsFragment;
@@ -58,6 +77,8 @@ public class GeneralActivity extends AppCompatActivity {
     // flag to load home fragment when user presses back key
     private boolean shouldLoadHomeFragOnBackPress = true;
     private Handler mHandler;
+
+    AutoCompleteTextView mAutocompleteTextView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -233,8 +254,6 @@ public class GeneralActivity extends AppCompatActivity {
                 return accountFragment;
             case 2:
                 // restaurants fragment
-                /*Intent restaurantPage = new Intent(GeneralActivity.this, RestaurantsActivity.class);
-                startActivity(restaurantPage);*/
                 RestoFragment restoFragment = new RestoFragment();
                 return restoFragment;
             case 4:
@@ -327,8 +346,19 @@ public class GeneralActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
         return true;
     }
+
+
+    private PlaceArrayAdapter mPlaceArrayAdapter;
+    final LatLngBounds BOUNDS_MOUNTAIN_VIEW= new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
+    ArrayList<String> restaurantName = new ArrayList<String>();
+    Map correspondSeachRestaurant = new HashMap();
+
+    private GoogleApiClient mGoogleApiClient;
+    private static final String LOG_TAG = "Restaurant Activity :";
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -348,11 +378,14 @@ public class GeneralActivity extends AppCompatActivity {
             return true;
         }
         else if(id == R.id.action_search) {
-
+            Intent gotoSearch = new Intent(GeneralActivity.this, RestaurantSearchActivity.class);
+            startActivity(gotoSearch);
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
     public static void setCurrentTag(String currentTag) {
         CURRENT_TAG = currentTag;
@@ -361,4 +394,6 @@ public class GeneralActivity extends AppCompatActivity {
     public static void setNavItemIndex(int navItemIndex) {
         GeneralActivity.navItemIndex = navItemIndex;
     }
+
+
 }

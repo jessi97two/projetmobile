@@ -7,4 +7,13 @@
     android:background="@color/ColorBackgroundOrange">
 
 
+    <AutoCompleteTextView
+        android:id="@+id/AutoCompRestaurantName"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:ems="10"
+        android:textColor="@android:color/white" />
+
 </android.support.v7.widget.Toolbar>

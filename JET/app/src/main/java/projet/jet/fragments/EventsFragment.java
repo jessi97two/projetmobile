@@ -154,10 +154,4 @@ public class EventsFragment extends Fragment {
         }
     }
 
-    public void onBackPressed()
-    {
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        fm.popBackStack();
-    }
-
 }
