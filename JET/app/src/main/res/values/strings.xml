@@ -30,4 +30,8 @@
     <string name="facebook_app_id">1216695078410326</string>
     <string name="search_friend_hint">Search friend...</string>
 
+    <!-- URL -->
+    <string name="url_data_php">http://192.168.1.86/projetmobile/data.php?</string>
+
+
 </resources>

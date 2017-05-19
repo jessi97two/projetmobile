@@ -93,6 +93,8 @@ public class RestoFragment extends Fragment implements
 
     public Activity a ;
 
+    String urlData = this.getString(R.string.url_data_php);
+
     @Override
     public void onStart() {
         super.onStart();
@@ -249,7 +251,6 @@ public class RestoFragment extends Fragment implements
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
                     String qs = "action=getFavoris&iduser=" + ga.prefs.getString("id", "");
                     URL url = new URL(urlData + "?" + qs);
                     Log.i("DEBUG CONNEXION", "url utilisée : " + url.toString());

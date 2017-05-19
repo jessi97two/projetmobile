@@ -20,6 +20,7 @@ import java.text.Normalizer;
 import java.util.concurrent.ExecutionException;
 
 import projet.jet.CommonsFunctions;
+import projet.jet.R;
 
 /**
  * Created by Jess on 16/05/2017.
@@ -29,7 +30,7 @@ public class Restaurant implements Serializable {
 
     //Communication with PHP
     String txtReponse;
-    String urlData = "http://192.168.1.12/2i/APP2/projetmobile/data.php";
+    String urlData;
     String query;
 
     private String name;
@@ -106,12 +107,19 @@ public class Restaurant implements Serializable {
 
     public void insert(Context context)
     {
-        contextGlobal = context;
+        this.loadURL(context);
         new addRestaurant().execute();
     }
-    public boolean isFavori(Context context)
+
+    public void loadURL(Context context)
     {
         contextGlobal = context;
+        urlData = context.getString(R.string.url_data_php);
+    }
+
+    public boolean isFavori(Context context)
+    {
+        this.loadURL(context);
         try {
             isFavori = new isFavori().execute().get();
         }
@@ -122,7 +130,7 @@ public class Restaurant implements Serializable {
 
     public void removeFavori(Context context)
     {
-        contextGlobal = context;
+        this.loadURL(context);
         new removeRestaurantFromFavori().execute();
     }
 

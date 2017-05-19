@@ -44,6 +44,7 @@ public class NewAccountActivity extends AppCompatActivity {
     EditText edttel;
     Button btnEnregistrerInsc;
     TextView registerErrorMsg;
+    String urlData = getApplication().getString(R.string.url_data_php);
 
     private Toolbar toolbar;
 
@@ -152,7 +153,6 @@ public class NewAccountActivity extends AppCompatActivity {
 
             if (netInfo != null && netInfo.isConnected()) {
                 try {
-                    String urlData = "http://192.168.43.120/2i/APP2/projetmobile/data.php";
                     String qs = "action=inscription" + "&nom=" + nom + "&prenom=" + prenom + "&login=" + login + "&password=" + password + "&mail=" + mail + "&tel=" + tel;
                     URL url = new URL(urlData + "?" + qs );
                     Log.i("DEBUG INSCRIPTION","url utilisée : " + url.toString());

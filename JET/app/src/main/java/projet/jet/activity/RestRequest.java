@@ -142,18 +142,19 @@ public class RestRequest extends AsyncTask<String, Void, JSONObject> {
         }
         else if(action.equals("getGroups")) {
             try {
-                String res  = result.getString("groupes");
-                JSONArray json = null;
-                if(!(res.equals("0"))) {
-                    json = new JSONArray(res);
-                }
-                if(mAct.act instanceof LauncherActivity) {
-                    LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
-                    launcherActivity.displayResult(json,"groupsReceived");
-                }
-                else if(mAct.act instanceof SondageCreationActivityGroupes) {
-                    SondageCreationActivityGroupes sondageCreationActivityGroupes = (SondageCreationActivityGroupes) mAct.act;
-                    sondageCreationActivityGroupes.displayResult(json,"groupsReceived");
+                if (!result.isNull("groupes")) {
+                    String res = result.getString("groupes");
+                    JSONArray json = null;
+                    if (!(res.equals("0"))) {
+                        json = new JSONArray(res);
+                    }
+                    if (mAct.act instanceof LauncherActivity) {
+                        LauncherActivity launcherActivity = (LauncherActivity) mAct.act;
+                        launcherActivity.displayResult(json, "groupsReceived");
+                    } else if (mAct.act instanceof SondageCreationActivityGroupes) {
+                        SondageCreationActivityGroupes sondageCreationActivityGroupes = (SondageCreationActivityGroupes) mAct.act;
+                        sondageCreationActivityGroupes.displayResult(json, "groupsReceived");
+                    }
                 }
 
             } catch (JSONException e) {

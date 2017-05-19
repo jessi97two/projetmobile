@@ -151,7 +151,7 @@ public class RestaurantSearchActivity extends AppCompatActivity implements
             //SET RESULT IN ACTIVITY
             //mNameTextView.setText(Html.fromHtml(place.getName() + ""));
 
-            mGoogleApiClient.disconnect();
+            //mGoogleApiClient.disconnect();
             if (!restaurantName.contains(place.getName().toString()))
             {
                 Restaurant newRestaurant = new Restaurant(
