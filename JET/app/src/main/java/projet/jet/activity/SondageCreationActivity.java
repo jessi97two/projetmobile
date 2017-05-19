@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import projet.jet.R;
 
@@ -38,10 +39,20 @@ public class SondageCreationActivity extends AppCompatActivity {
         btnGoToPart2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gotoPart2 = new Intent(SondageCreationActivity.this, SondageCreationActivityDate.class);
-                gotoPart2.putExtra("titre",titre.getText().toString());
-                gotoPart2.putExtra("description",description.getText().toString());
-                startActivity(gotoPart2);
+
+                if(titre.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(),"Le champs titre est obligatoire !",Toast.LENGTH_SHORT).show();
+                }
+                else if(description.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(),"Le champs description est obligatoire !",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent gotoPart2 = new Intent(SondageCreationActivity.this, SondageCreationActivityDate.class);
+                    gotoPart2.putExtra("titre",titre.getText().toString());
+                    gotoPart2.putExtra("description",description.getText().toString());
+                    startActivity(gotoPart2);
+                }
+
             }
         });
     }

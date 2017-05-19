@@ -49,16 +49,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import projet.jet.CommonsFunctions;
-import projet.jet.GeneralActivity;
+import projet.jet.activity.GeneralActivity;
 import projet.jet.GlobalApp;
 import projet.jet.R;
 import projet.jet.activity.RestaurantInfoViewActivity;
-import projet.jet.activity.RestaurantsActivity;
-import projet.jet.adapter.CustomListviewRestaurantAdapter;
 import projet.jet.adapter.PlaceArrayAdapter;
 import projet.jet.classe.Restaurant;
 

@@ -75,7 +75,7 @@ function getInvitations($iduser) {
 }
 
 function getEventsProche($iduser) {
-	$SQL = "SELECT e.nom FROM events AS e
+	$SQL = "SELECT e.nom, e.id FROM events AS e
 			LEFT JOIN participationsevents AS p ON p.idevent = e.id
 			WHERE DATEDIFF(e.dateEvent , NOW()) < 7 AND DATEDIFF(e.dateEvent , NOW()) > 0 AND p.iduser = '$iduser'";
 	return parcoursRs(SQLSelect($SQL));
@@ -138,7 +138,7 @@ function removeGroup($iduser,$group) {
 }
 
 function getRestaurants($iduser) {
-	$SQL = "SELECT id,nom FROM restaurants WHERE iduser = '$iduser'";
+	$SQL = "SELECT r.id, r.nom FROM restaurants AS r JOIN favoris AS f ON f.idrestaurant = r.id WHERE f.iduser = '$iduser'";
 	return parcoursRs(SQLSelect($SQL));
 	
 }
@@ -194,9 +194,13 @@ function getAllSondagesUser($iduser) {
 }
 
 function getResultatsDateSondage($idsondage) {
-	$SQL = "SELECT count(*) AS nbre, d.datepropose as choixdate, d.id AS iddate FROM reponsessondages AS r
+	/*$SQL = "SELECT count(*) AS nbre, d.datepropose as choixdate, d.id AS iddate FROM reponsessondages AS r
 			JOIN propositionsdate as d on d.id = r.iddate
-			WHERE r.idsondage = '$idsondage'";
+			WHERE r.idsondage = '$idsondage'";*/
+	$SQL = "SELECT count(r.id) AS nbre, d.id AS iddate, d.datepropose as choixdate FROM propositionsdate as d 
+			left join reponsessondages as r on d.id = r.iddate 
+			where d.idsondage='$idsondage' 
+			group by d.datepropose";
 	return parcoursRs(SQLSelect($SQL));
 }
 
@@ -208,10 +212,11 @@ function getUsersResultatsDateSondage($idsondage,$iddate) {
 }
 
 function getResultatsRestaurantSondage($idsondage) {
-	$SQL = "SELECT count(*) AS nbre, r.nom AS choixresto, r.id AS idrestaurant FROM reponsessondages AS rs
-			JOIN propositionsrestaurant as p on p.id = rs.idrestaurant
+	$SQL = "SELECT count(rs.id) AS nbre, r.nom AS choixresto, r.id AS idrestaurant FROM propositionsrestaurant AS p
+			left JOIN reponsessondages as rs on p.idrestaurant = rs.idrestaurant
             JOIN restaurants as r on p.idrestaurant = r.id
-			WHERE rs.idsondage = '$idsondage'";
+			WHERE p.idsondage = '$idsondage'
+			group by p.idrestaurant";
 	return parcoursRs(SQLSelect($SQL));
 }
 
@@ -265,7 +270,8 @@ function getReponsesUsersEvent($idevent) {
 }
 
 function removeLiensGroupContacts($idgroupe) {
-	
+	$SQL = "DELETE FROM liens_users_groupes WHERE idgroupe='$idgroupe'";
+    return SQLDelete($SQL);
 }
 
 function getContactsGroupUser($iduser,$idgroupe) {
@@ -317,6 +323,11 @@ function removeFavori($idUser, $idGoogle)
 {
     $SQL = "DELETE FROM favoris WHERE iduser='$idUser' AND idGoogle='$idGoogle'";
     return SQLDelete($SQL);
+}
+
+function sendInvitation($idevent,$idgroupe) {
+	$SQL = "INSERT INTO invitations(idevent, idgroupe) VALUES ('$idevent','$idgroupe')";
+    return SQLInsert($SQL);
 }
 
 /*

@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +19,7 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-import projet.jet.GeneralActivity;
+import projet.jet.activity.GeneralActivity;
 import projet.jet.GlobalApp;
 import projet.jet.R;
 import projet.jet.activity.RestActivity;

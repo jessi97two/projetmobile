@@ -1,12 +1,9 @@
-package projet.jet;
+package projet.jet.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -14,21 +11,14 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.NavigationView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
@@ -36,11 +26,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import projet.jet.activity.RestaurantSearchActivity;
-import projet.jet.activity.RestaurantsActivity;
-import projet.jet.adapter.CustomListviewRestaurantAdapter;
+import projet.jet.GlobalApp;
+import projet.jet.R;
 import projet.jet.adapter.PlaceArrayAdapter;
-import projet.jet.classe.Restaurant;
 import projet.jet.fragments.AccountFragment;
 import projet.jet.fragments.EventsFragment;
 import projet.jet.fragments.GroupsFragment;
@@ -119,8 +107,6 @@ public class GeneralActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"Account Selected",Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.restaurants:
-                        Intent restaurantPage = new Intent(GeneralActivity.this, RestaurantsActivity.class);
-                        startActivity(restaurantPage);
                         Toast.makeText(getApplicationContext(),"Restaurants Selected",Toast.LENGTH_SHORT).show();
                         return true;
 

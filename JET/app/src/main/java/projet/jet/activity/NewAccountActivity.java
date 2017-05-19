@@ -1,4 +1,4 @@
-package projet.jet;
+package projet.jet.activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -29,6 +29,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import projet.jet.R;
 
 /**
  * Created by Jess on 02/12/2016.

@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -63,14 +64,20 @@ public class SondageCreationActivityGroupes extends AppCompatActivity {
         btnGoToPartRecap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String groupechcked = groupeChecked.get(0);
-                Intent gotoPart5 = new Intent(SondageCreationActivityGroupes.this, SondageCreationActivityRecapitulatif.class);
-                gotoPart5.putExtra("titre",titre);
-                gotoPart5.putExtra("description", description);
-                gotoPart5.putStringArrayListExtra("date",(ArrayList<String>) datesList);
-                gotoPart5.putStringArrayListExtra("restaurants",(ArrayList<String>)restaurantsList);
-                gotoPart5.putExtra("groupe", groupechcked);
-                startActivity(gotoPart5);
+                if(groupeChecked.size() == 0 || groupeChecked.size() > 1) {
+                    Toast.makeText(getApplicationContext(),"Un seul groupe peut être sélectionné !",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    String groupechcked = groupeChecked.get(0);
+                    Intent gotoPart5 = new Intent(SondageCreationActivityGroupes.this, SondageCreationActivityRecapitulatif.class);
+                    gotoPart5.putExtra("titre",titre);
+                    gotoPart5.putExtra("description", description);
+                    gotoPart5.putStringArrayListExtra("date",(ArrayList<String>) datesList);
+                    gotoPart5.putStringArrayListExtra("restaurants",(ArrayList<String>)restaurantsList);
+                    gotoPart5.putExtra("groupe", groupechcked);
+                    startActivity(gotoPart5);
+                }
+
             }
         });
 

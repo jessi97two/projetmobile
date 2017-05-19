@@ -532,6 +532,18 @@ session_start();
                 $data["statutsuppression"] = "1"; // 1 signifie que l'inscription a bien été faite
             }
         }
+        else if($data["action"] == "sendInvitation") {
+            if($idevent = valider("idevent"))
+            if($idgroupe = valider("idgroupe")){
+            	$invitation = sendInvitation($idevent,$idgroupe);
+            	if(count($invitation)) {
+					$data["invitation"] = $invitation;
+				}
+				else {
+					$data["invitation"] = "0";
+				}
+            }
+        }
 	}
 
 	echo json_encode($data);
