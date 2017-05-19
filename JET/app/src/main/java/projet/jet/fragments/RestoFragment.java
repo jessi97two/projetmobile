@@ -90,7 +90,7 @@ public class RestoFragment extends Fragment implements
 
     public Activity a ;
 
-    String urlData = this.getString(R.string.url_data_php);
+    String urlData ;
 
     @Override
     public void onStart() {
@@ -105,6 +105,8 @@ public class RestoFragment extends Fragment implements
 
         a  = getActivity();
         ga = (GlobalApp) a.getApplication();
+
+        urlData = a.getString(R.string.url_data_php);
 
         v.setFocusableInTouchMode(true);
         v.setOnKeyListener( new View.OnKeyListener(){
@@ -175,7 +177,7 @@ public class RestoFragment extends Fragment implements
             // Selecting the first object buffer.
             final Place place = places.get(0);
 
-            mGoogleApiClient.disconnect();
+            //mGoogleApiClient.disconnect();
 
             //SET RESULT IN ACTIVITY
             if (!restaurantName.contains(place.getName().toString()))
