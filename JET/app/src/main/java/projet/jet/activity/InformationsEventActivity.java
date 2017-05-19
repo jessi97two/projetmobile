@@ -71,8 +71,8 @@ public class InformationsEventActivity extends AppCompatActivity {
             try {
                 txtNomEvent.setText(json.getJSONObject(0).getString("nomEvent"));
                 txtDate.setText(json.getJSONObject(0).getString("dateEvent"));
-                txtLieu.setText(json.getJSONObject(0).getString("heureDebut"));
-                txtHeure.setText(json.getJSONObject(0).getString("restaurant"));
+                txtLieu.setText(json.getJSONObject(0).getString("restaurant"));
+                txtHeure.setText(json.getJSONObject(0).getString("heureDebut"));
             }
             catch (JSONException e) {
                 e.printStackTrace();

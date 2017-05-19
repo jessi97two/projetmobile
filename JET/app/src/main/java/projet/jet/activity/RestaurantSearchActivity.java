@@ -124,6 +124,8 @@ public class RestaurantSearchActivity extends AppCompatActivity implements
             = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            restaurantName.clear();
+            listViewSearch.setAdapter(null);
             final PlaceArrayAdapter.PlaceAutocomplete item = mPlaceArrayAdapter.getItem(position);
             final String placeId = String.valueOf(item.placeId);
             Log.i(LOG_TAG, "Selected: " + item.description);

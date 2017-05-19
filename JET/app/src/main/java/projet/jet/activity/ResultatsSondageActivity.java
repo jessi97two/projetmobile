@@ -103,6 +103,8 @@ public class ResultatsSondageActivity extends AppCompatActivity {
         gotocreationevent.putExtra("idsondage", idsondage);
         startActivity(gotocreationevent);
     }
+    List<String> listDates = new ArrayList<>();
+    List<String> listRestos = new ArrayList<>();
 
     public void loadUsersResultatsDatesSondage(JSONArray json) {
         try {
@@ -114,6 +116,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
                 iddate = json.getJSONObject(i).getString("iddate");
                 nombreVotantsDates = json.getJSONObject(i).getString("nbre");
                 choixdate = json.getJSONObject(i).getString("choixdate");
+                listDates.add(choixdate + "_" + nombreVotantsDates);
 
                 String req = "action=getUsersResultatsDateSondage&idsondage=" + idsondage + "&iddate=" + iddate;
                 restAct.envoiRequete(req,"getUsersResultatsDateSondage",(GlobalApp) getApplication(),null, this);
@@ -137,6 +140,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
                 idrestaurant = json.getJSONObject(i).getString("idrestaurant");
                 nombreVotantsRestaurants = json.getJSONObject(i).getString("nbre");
                 choixrestaurant = json.getJSONObject(i).getString("choixresto");
+                listRestos.add(choixrestaurant + "_" + nombreVotantsRestaurants);
 
                 String req = "action=getUsersResultatsRestaurantSondage&idsondage=" + idsondage + "&idrestaurant=" + idrestaurant;
                 restAct.envoiRequete(req,"getUsersResultatsRestaurantSondage",(GlobalApp) getApplication(),null, this);
@@ -150,7 +154,8 @@ public class ResultatsSondageActivity extends AppCompatActivity {
     public void completeTableChoixDates(JSONArray json) {
         try {
             String personnes = "";
-            String datechoix = choixdate;
+            final String datechoix = listDates.get(0).split("_")[0];
+            String nbvotants = listDates.get(0).split("_")[1];
 
             for(int i=0; i<json.length(); i++) {
                 personnes = personnes + " " + json.getJSONObject(i).getString("login");
@@ -161,7 +166,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
             tr.setPadding(10,0,10,0);
 
             TextView c1 = new TextView(this);
-            c1.setText(nombreVotantsDates);
+            c1.setText(nbvotants);
             c1.setBackgroundResource(R.drawable.table_cell_bg);
             c1.setPadding(5,5,5,5);
             c1.setGravity(Gravity.CENTER);
@@ -174,10 +179,10 @@ public class ResultatsSondageActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked) {
-                        listDateChecked.add(choixdate);
+                        listDateChecked.add(datechoix);
                     }
                     else {
-                        listDateChecked.remove(choixdate);
+                        listDateChecked.remove(datechoix);
                     }
                 }
             });
@@ -203,13 +208,14 @@ public class ResultatsSondageActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
+        listDates.remove(0);
     }
 
     public void completeTableChoixRestaurants(JSONArray json) {
         try {
             String personnes = "";
-            String restaurantchoix = choixrestaurant;
+            final String restaurantchoix = listRestos.get(0).split("_")[0];
+            String nbvotants = listRestos.get(0).split("_")[1];
 
             for(int i=0; i<json.length(); i++) {
                 personnes = personnes + " " + json.getJSONObject(i).getString("login");
@@ -220,7 +226,7 @@ public class ResultatsSondageActivity extends AppCompatActivity {
             tr.setPadding(10,0,10,0);
 
             TextView c1 = new TextView(this);
-            c1.setText(nombreVotantsRestaurants);
+            c1.setText(nbvotants);
             c1.setBackgroundResource(R.drawable.table_cell_bg);
             c1.setPadding(5,5,5,5);
             c1.setGravity(Gravity.CENTER);
@@ -233,10 +239,10 @@ public class ResultatsSondageActivity extends AppCompatActivity {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     if(isChecked) {
-                        listRestaurantChecked.add(choixrestaurant);
+                        listRestaurantChecked.add(restaurantchoix);
                     }
                     else {
-                        listRestaurantChecked.remove(choixrestaurant);
+                        listRestaurantChecked.remove(restaurantchoix);
                     }
                 }
             });
@@ -261,6 +267,8 @@ public class ResultatsSondageActivity extends AppCompatActivity {
         catch (JSONException e) {
             e.printStackTrace();
         }
+
+        listRestos.remove(0);
     }
 
  }

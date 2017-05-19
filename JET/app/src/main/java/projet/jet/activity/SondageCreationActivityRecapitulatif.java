@@ -40,6 +40,7 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
     private String restaurants;
     private String dates;
     private String idsondageencours;
+    private String numPhone;
 
     private Button btnLancementSondage;
     private TextView txtTitre;
@@ -119,7 +120,7 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
                 String nom = contact.name;
 
                 String num = numero.replace("+33","0");
-
+                numPhone = num;
                 String qs = "action=getContactByNumber&iduser=" + ((GlobalApp)getApplication()).prefs.getString("id","") + "&numero="
                         + num + "&name=" + nom + "&groupe=" + groupe;
                 restAct.envoiRequete(qs,"getContactByNumber",(GlobalApp) getApplication(),null,this);
@@ -218,13 +219,11 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
 
     public void sendSMS() {
 
-        String numero = "+33617981600";
+        String numero = numPhone;
         String message = "Tu as reçu une invitation sur l'application Just Eat Together par un de tes amis. " +
                             "N'hésite pas à installer l'application si tu souhaites consulter tes invitations " +
                             "ou même organiser des sorties au restaurant avec tes amis ou ta famille.";
         try {
-            //SmsManager smsManager = SmsManager.getDefault();
-            //smsManager.sendTextMessage(numero, null, message, null, null);
             PendingIntent sentPI = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(SENT_SMS_ACTION_NAME), 0);
             PendingIntent deliveredPI = PendingIntent.getBroadcast(getApplicationContext(), 0, new Intent(DELIVERED_SMS_ACTION_NAME), 0);
 
