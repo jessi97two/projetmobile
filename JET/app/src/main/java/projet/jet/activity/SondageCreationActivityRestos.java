@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -88,10 +90,32 @@ public class SondageCreationActivityRestos extends AppCompatActivity {
                 CustomListviewCheckboxAdapter adapter = new CustomListviewCheckboxAdapter(this, propositionsSondagesList);
                 listRestosChecked = adapter.getListPropositionsChecked();
                 listRestaurantsSondage.setAdapter(adapter);
+                ListUtils.setDynamicHeight(listRestaurantsSondage);
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public static class ListUtils {
+        public static void setDynamicHeight(ListView mListView) {
+            ListAdapter mListAdapter = mListView.getAdapter();
+            if (mListAdapter == null) {
+                // when adapter is null
+                return;
+            }
+            int height = 0;
+            int desiredWidth = View.MeasureSpec.makeMeasureSpec(mListView.getWidth(), View.MeasureSpec.UNSPECIFIED);
+            for (int i = 0; i < mListAdapter.getCount(); i++) {
+                View listItem = mListAdapter.getView(i, null, mListView);
+                listItem.measure(desiredWidth, View.MeasureSpec.UNSPECIFIED);
+                height += listItem.getMeasuredHeight();
+            }
+            ViewGroup.LayoutParams params = mListView.getLayoutParams();
+            params.height = height + (mListView.getDividerHeight() * (mListAdapter.getCount() - 1));
+            mListView.setLayoutParams(params);
+            mListView.requestLayout();
         }
     }
 }

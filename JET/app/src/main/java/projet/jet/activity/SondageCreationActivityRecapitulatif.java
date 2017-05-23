@@ -40,7 +40,6 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
     private String restaurants;
     private String dates;
     private String idsondageencours;
-    private String numPhone;
 
     private Button btnLancementSondage;
     private TextView txtTitre;
@@ -83,7 +82,6 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
         restAct.envoiRequete(req2,"getGroupById",(GlobalApp) getApplication(),null,this);
 
 
-
         btnLancementSondage = (Button) findViewById(R.id.buttonLancementSondage);
         btnLancementSondage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +118,6 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
                 String nom = contact.name;
 
                 String num = numero.replace("+33","0");
-                numPhone = num;
                 String qs = "action=getContactByNumber&iduser=" + ((GlobalApp)getApplication()).prefs.getString("id","") + "&numero="
                         + num + "&name=" + nom + "&groupe=" + groupe;
                 restAct.envoiRequete(qs,"getContactByNumber",(GlobalApp) getApplication(),null,this);
@@ -217,9 +214,9 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
         txtGroupe.setText(nomgroupe);
     }
 
-    public void sendSMS() {
+    public void sendSMS(String numcontact) {
 
-        String numero = numPhone;
+        String numero = numcontact;
         String message = "Tu as reçu une invitation sur l'application Just Eat Together par un de tes amis. " +
                             "N'hésite pas à installer l'application si tu souhaites consulter tes invitations " +
                             "ou même organiser des sorties au restaurant avec tes amis ou ta famille.";
@@ -240,7 +237,7 @@ public class SondageCreationActivityRecapitulatif extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "SMS Sent!", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
-            Toast.makeText(getApplicationContext(),"SMS faild, please try again later!",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),"SMS failed, please try again later!",Toast.LENGTH_LONG).show();
         e.printStackTrace();
     }
 
